@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.340">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2023-04-25">
+
+<title>COVID Data Analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="DBExplor_files/libs/clipboard/clipboard.min.js"></script>
+<script src="DBExplor_files/libs/quarto-html/quarto.js"></script>
+<script src="DBExplor_files/libs/quarto-html/popper.min.js"></script>
+<script src="DBExplor_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="DBExplor_files/libs/quarto-html/anchor.min.js"></script>
+<link href="DBExplor_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="DBExplor_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="DBExplor_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="DBExplor_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="DBExplor_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">COVID Data Analysis</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 25, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> unidecode <span class="im">import</span> unidecode</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.colors <span class="im">import</span> ListedColormap</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>sns.<span class="bu">set</span>(style<span class="op">=</span><span class="st">'whitegrid'</span>, rc<span class="op">=</span>{<span class="st">'figure.figsize'</span>:(<span class="dv">16</span>, <span class="dv">4</span>)})</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># I want crisp graphics, so we'll output SVG</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_format <span class="op">=</span> <span class="st">'svg'</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> pd.read_csv(<span class="st">'../data/raw/raw_base_junio.csv'</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>cas_ <span class="op">=</span> pd.read_csv(<span class="st">'https://raw.githubusercontent.com/andrab/ecuacovid/master/datos_crudos/ecuacovid.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_mutaciones(df):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    dums <span class="op">=</span> <span class="op">\</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    (df</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>     .mutaciones</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>     .<span class="bu">str</span>.replace(<span class="st">'[()]'</span>, <span class="st">''</span>, regex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>     .<span class="bu">str</span>.get_dummies(sep<span class="op">=</span><span class="st">','</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>     .rename(columns<span class="op">=</span><span class="kw">lambda</span> c: <span class="st">'__'</span> <span class="op">+</span> c)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.concat([df, dums], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tweak_covid(df):</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (df</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>     .rename(columns<span class="op">=</span><span class="kw">lambda</span> c:unidecode(c.replace(<span class="st">' '</span>, <span class="st">'_'</span>).lower()))</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>     .drop(index<span class="op">=</span>df[df.Edad.<span class="bu">str</span>.contains(<span class="st">'months'</span>)<span class="op">==</span><span class="va">True</span>].index)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>     .drop(columns<span class="op">=</span>[<span class="st">'gisaid_id'</span>, <span class="st">'unnamed:_1'</span>, <span class="st">'fecha_de_subida_a_gisaid'</span>])</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>     .dropna(subset<span class="op">=</span>[<span class="st">'linaje'</span>, <span class="st">'clado'</span>, <span class="st">'mutaciones'</span>])</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>     .applymap(<span class="kw">lambda</span> tx: unidecode(tx.title()) <span class="cf">if</span> <span class="bu">isinstance</span>(tx, <span class="bu">str</span>) <span class="cf">else</span> tx)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>     .pipe(get_mutaciones)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>     .assign(fecha_de_coleccion<span class="op">=</span><span class="kw">lambda</span> df_:pd.to_datetime(df_.fecha_de_coleccion),</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>             edad<span class="op">=</span><span class="kw">lambda</span> df_:(df_</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>                              .edad</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>                              .replace(to_replace<span class="op">=</span>[<span class="st">'Unknown'</span>, <span class="st">'M'</span>], value<span class="op">=</span>np.nan)), <span class="co"># neither floats nor int are nullable</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>             virus_name_unidentified<span class="op">=</span><span class="kw">lambda</span> df_:(df_</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>                                                 .virus_name</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>                                                 .<span class="bu">str</span>.split(<span class="st">'/'</span>, expand<span class="op">=</span><span class="va">True</span>)[<span class="dv">2</span>]),</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>             count_muts<span class="op">=</span><span class="kw">lambda</span> df_:(df_</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>                                    [[c <span class="cf">for</span> c <span class="kw">in</span> df_.columns <span class="cf">if</span> c <span class="kw">not</span> <span class="kw">in</span> [<span class="st">'provincia'</span>, <span class="st">'ciudad'</span>, <span class="st">'tipo'</span>, </span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>                                                                          <span class="st">'genero'</span>, <span class="st">'edad'</span>, <span class="st">'linaje'</span>, </span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>                                                                          <span class="st">'clado'</span>, <span class="st">'virus_name'</span>, <span class="st">'mutaciones'</span>,</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>                                                                          <span class="st">'fecha_de_coleccion'</span>, <span class="st">'virus_name_unidentified'</span>]]]</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>                                    .<span class="bu">apply</span>(<span class="kw">lambda</span> s: s.<span class="bu">sum</span>(), axis<span class="op">=</span><span class="dv">1</span>)),</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>     .drop(columns<span class="op">=</span>[<span class="st">'virus_name'</span>, <span class="st">'mutaciones'</span>])</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>     .set_index(<span class="st">'fecha_de_coleccion'</span>)</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> tweak_covid(raw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">provincia</th>
+<th data-quarto-table-cell-role="th">ciudad</th>
+<th data-quarto-table-cell-role="th">tipo</th>
+<th data-quarto-table-cell-role="th">genero</th>
+<th data-quarto-table-cell-role="th">edad</th>
+<th data-quarto-table-cell-role="th">linaje</th>
+<th data-quarto-table-cell-role="th">clado</th>
+<th data-quarto-table-cell-role="th">__E_A41V</th>
+<th data-quarto-table-cell-role="th">__E_L73F</th>
+<th data-quarto-table-cell-role="th">__E_R61L</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">__Spike_Y145Del</th>
+<th data-quarto-table-cell-role="th">__Spike_Y145N</th>
+<th data-quarto-table-cell-role="th">__Spike_Y145P</th>
+<th data-quarto-table-cell-role="th">__Spike_Y145T</th>
+<th data-quarto-table-cell-role="th">__Spike_Y248Del</th>
+<th data-quarto-table-cell-role="th">__Spike_Y248F</th>
+<th data-quarto-table-cell-role="th">__Spike_Y449N</th>
+<th data-quarto-table-cell-role="th">__Spike_Y505H</th>
+<th data-quarto-table-cell-role="th">virus_name_unidentified</th>
+<th data-quarto-table-cell-role="th">count_muts</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">fecha_de_coleccion</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2020-03-09</td>
+<td>Pichincha</td>
+<td>Quito</td>
+<td>Hospital</td>
+<td>Male</td>
+<td>57</td>
+<td>B.55</td>
+<td>L</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>Hee-01</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2020-03-30</td>
+<td>Pichincha</td>
+<td>Quito</td>
+<td>Hospital</td>
+<td>Male</td>
+<td>27</td>
+<td>B.1.1</td>
+<td>Gr</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>Hgsq-Usfq-018</td>
+<td>5</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2020-03-30</td>
+<td>Pichincha</td>
+<td>Quito</td>
+<td>Hospital</td>
+<td>Male</td>
+<td>40</td>
+<td>B.1.14</td>
+<td>O</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>Hgsq-Usfq-007</td>
+<td>18</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2020-03-30</td>
+<td>Pichincha</td>
+<td>Quito</td>
+<td>Hospital</td>
+<td>Male</td>
+<td>39</td>
+<td>B.1.14</td>
+<td>O</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>Hgsq-Usfq-010</td>
+<td>18</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2020-04-17</td>
+<td>Los Rios</td>
+<td>Babahoyo</td>
+<td>Hospital</td>
+<td>Female</td>
+<td>50</td>
+<td>B.1.67</td>
+<td>G</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>Usfq-020</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2022-05-27</td>
+<td>Pichincha</td>
+<td>Quito</td>
+<td>Ambulatorio</td>
+<td>Male</td>
+<td>42</td>
+<td>Ba.2</td>
+<td>Gra</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>Usfq-3477</td>
+<td>53</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2022-05-28</td>
+<td>Pichincha</td>
+<td>Quito</td>
+<td>Ambulatorio</td>
+<td>Male</td>
+<td>54</td>
+<td>Ba.2</td>
+<td>Gra</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>Usfq-3479</td>
+<td>61</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2022-05-29</td>
+<td>Pichincha</td>
+<td>Quito</td>
+<td>Ambulatorio</td>
+<td>Male</td>
+<td>5</td>
+<td>Ba.2</td>
+<td>Gra</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>Usfq-3482</td>
+<td>51</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2022-05-25</td>
+<td>Pichincha</td>
+<td>Quito</td>
+<td>Ambulatorio</td>
+<td>Male</td>
+<td>34</td>
+<td>Ba.2</td>
+<td>Gra</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>Usfq-3483</td>
+<td>47</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2022-05-30</td>
+<td>Pichincha</td>
+<td>Quito</td>
+<td>Ambulatorio</td>
+<td>Female</td>
+<td>67</td>
+<td>Ba.2.9</td>
+<td>Gra</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>Usfq-3484</td>
+<td>56</td>
+</tr>
+</tbody>
+</table>
+
+<p>1645 rows × 2010 columns</p>
+</div>
+</div>
+</div>
+<section id="exploring-the-prevalence-of-variants" class="level3">
+<h3 class="anchored" data-anchor-id="exploring-the-prevalence-of-variants">Exploring the prevalence of variants</h3>
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Which variants have occurred more frequently</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> pd.option_context(<span class="st">'max_rows'</span>, <span class="va">None</span>):</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    display(</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        (df</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>         .groupby([<span class="st">'linaje'</span>])</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>         .agg({<span class="st">'linaje'</span>:<span class="st">'count'</span>})</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>         .rename(columns<span class="op">=</span>{<span class="st">'linaje'</span>:<span class="st">'Relative Percentage'</span>})</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>         .<span class="bu">apply</span>(<span class="kw">lambda</span> s: s <span class="op">/</span> s.<span class="bu">sum</span>())</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>         .sort_values(by<span class="op">=</span><span class="st">'Relative Percentage'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>         [:<span class="dv">10</span>]</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>         .style</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>         .background_gradient(axis<span class="op">=</span><span class="va">None</span>, vmin<span class="op">=</span><span class="fl">0.03</span>, vmax<span class="op">=</span><span class="fl">0.18</span>, cmap<span class="op">=</span><span class="st">'inferno'</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>         .<span class="bu">format</span>(<span class="kw">lambda</span> x: <span class="ss">f'</span><span class="sc">{</span>x <span class="op">*</span> <span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%'</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        )     </span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<style type="text/css">
+#T_9926d_row0_col0 {
+  background-color: #fcffa4;
+  color: #000000;
+}
+#T_9926d_row1_col0 {
+  background-color: #cf4446;
+  color: #f1f1f1;
+}
+#T_9926d_row2_col0 {
+  background-color: #741a6e;
+  color: #f1f1f1;
+}
+#T_9926d_row3_col0 {
+  background-color: #4f0d6c;
+  color: #f1f1f1;
+}
+#T_9926d_row4_col0 {
+  background-color: #4a0c6b;
+  color: #f1f1f1;
+}
+#T_9926d_row5_col0 {
+  background-color: #360961;
+  color: #f1f1f1;
+}
+#T_9926d_row6_col0 {
+  background-color: #050417;
+  color: #f1f1f1;
+}
+#T_9926d_row7_col0 {
+  background-color: #040312;
+  color: #f1f1f1;
+}
+#T_9926d_row8_col0 {
+  background-color: #010108;
+  color: #f1f1f1;
+}
+#T_9926d_row9_col0 {
+  background-color: #010005;
+  color: #f1f1f1;
+}
+</style>
+
+<table id="T_9926d_" data-quarto-postprocess="true" class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th class="blank level0" data-quarto-table-cell-role="th">&nbsp;</th>
+<th class="col_heading level0 col0" data-quarto-table-cell-role="th">Relative Percentage</th>
+</tr>
+<tr class="odd">
+<th class="index_name level0" data-quarto-table-cell-role="th">linaje</th>
+<th class="blank col0" data-quarto-table-cell-role="th">&nbsp;</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td id="T_9926d_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">Ba.1.1</td>
+<td id="T_9926d_row0_col0" class="data row0 col0">18.12%</td>
+</tr>
+<tr class="even">
+<td id="T_9926d_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">B.1</td>
+<td id="T_9926d_row1_col0" class="data row1 col0">11.37%</td>
+</tr>
+<tr class="odd">
+<td id="T_9926d_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">Ba.1.14</td>
+<td id="T_9926d_row2_col0" class="data row2 col0">7.84%</td>
+</tr>
+<tr class="even">
+<td id="T_9926d_level0_row3" class="row_heading level0 row3" data-quarto-table-cell-role="th">B.1.1</td>
+<td id="T_9926d_row3_col0" class="data row3 col0">6.50%</td>
+</tr>
+<tr class="odd">
+<td id="T_9926d_level0_row4" class="row_heading level0 row4" data-quarto-table-cell-role="th">B.1.1.7</td>
+<td id="T_9926d_row4_col0" class="data row4 col0">6.32%</td>
+</tr>
+<tr class="even">
+<td id="T_9926d_level0_row5" class="row_heading level0 row5" data-quarto-table-cell-role="th">Ay.122</td>
+<td id="T_9926d_row5_col0" class="data row5 col0">5.59%</td>
+</tr>
+<tr class="odd">
+<td id="T_9926d_level0_row6" class="row_heading level0 row6" data-quarto-table-cell-role="th">P.1</td>
+<td id="T_9926d_row6_col0" class="data row6 col0">3.59%</td>
+</tr>
+<tr class="even">
+<td id="T_9926d_level0_row7" class="row_heading level0 row7" data-quarto-table-cell-role="th">B.1.621</td>
+<td id="T_9926d_row7_col0" class="data row7 col0">3.53%</td>
+</tr>
+<tr class="odd">
+<td id="T_9926d_level0_row8" class="row_heading level0 row8" data-quarto-table-cell-role="th">B.1.526</td>
+<td id="T_9926d_row8_col0" class="data row8 col0">3.22%</td>
+</tr>
+<tr class="even">
+<td id="T_9926d_level0_row9" class="row_heading level0 row9" data-quarto-table-cell-role="th">Ay.100</td>
+<td id="T_9926d_row9_col0" class="data row9 col0">3.10%</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The sars-cov-2 variants <em>Ba.1.1</em>, <em>B.1</em>, <em>Ba.1.14</em>, <em>B.1.1</em>, <em>B.1.1.7</em> account for aproximately 50% of all sampled sars-cov-2 variants.</p>
+<div class="cell" data-execution_count="213">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_heat(df):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">16</span>))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    heat <span class="op">=</span> ax.imshow(df,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                     cmap<span class="op">=</span><span class="st">'hot'</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                     norm<span class="op">=</span><span class="st">'linear'</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>                     vmin<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>                     vmax<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>                     interpolation<span class="op">=</span><span class="st">'bilinear'</span>,</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>                     aspect<span class="op">=</span><span class="st">'auto'</span>,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>                     extent<span class="op">=</span>[<span class="dv">0</span>, df.shape[<span class="dv">1</span>], <span class="dv">0</span>, df.shape[<span class="dv">0</span>]]</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>                    )</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># fig.colorbar(heat)</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    ax.grid(<span class="va">False</span>)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>(df</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a> [[<span class="st">'linaje'</span>] <span class="op">+</span> [c <span class="cf">for</span> c <span class="kw">in</span> df.columns <span class="cf">if</span> <span class="st">'__'</span> <span class="kw">in</span> c]]</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a> .loc[df.linaje.isin([<span class="st">'Ba.1.1'</span>, <span class="st">'B.1'</span>, <span class="st">'Ba.1.14'</span>, <span class="st">'B.1.1'</span>, <span class="st">'B.1.1.7'</span>])]</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a> .melt(id_vars<span class="op">=</span><span class="st">'linaje'</span>)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a> .groupby([<span class="st">'linaje'</span>, <span class="st">'variable'</span>])</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a> .agg(<span class="st">'sum'</span>)</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a> .unstack(level<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a> .<span class="bu">apply</span>(<span class="kw">lambda</span> s: (s <span class="op">/</span> s.<span class="bu">sum</span>()) <span class="op">*</span> <span class="dv">100</span>, axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a> .pipe(plot_heat)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="DBExplor_files/figure-html/cell-6-output-1.svg" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="111">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>plt.imshow?</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div class="ansi-escaped-output">
+
+<pre><span class="ansi-red-fg ansi-bold">Signature:</span>
+plt<span class="ansi-yellow-fg ansi-bold">.</span>imshow<span class="ansi-yellow-fg ansi-bold">(</span><span class="ansi-yellow-fg ansi-bold">
+</span>    X<span class="ansi-yellow-fg ansi-bold">,</span><span class="ansi-yellow-fg ansi-bold">
+</span>    cmap<span class="ansi-yellow-fg ansi-bold">=</span><span class="ansi-green-fg ansi-bold">None</span><span class="ansi-yellow-fg ansi-bold">,</span><span class="ansi-yellow-fg ansi-bold">
+</span>    norm<span class="ansi-yellow-fg ansi-bold">=</span><span class="ansi-green-fg ansi-bold">None</span><span class="ansi-yellow-fg ansi-bold">,</span><span class="ansi-yellow-fg ansi-bold">
+</span>    <span class="ansi-yellow-fg ansi-bold">*</span><span class="ansi-yellow-fg ansi-bold">,</span><span class="ansi-yellow-fg ansi-bold">
+</span>    aspect<span class="ansi-yellow-fg ansi-bold">=</span><span class="ansi-green-fg ansi-bold">None</span><span class="ansi-yellow-fg ansi-bold">,</span><span class="ansi-yellow-fg ansi-bold">
+</span>    interpolation<span class="ansi-yellow-fg ansi-bold">=</span><span class="ansi-green-fg ansi-bold">None</span><span class="ansi-yellow-fg ansi-bold">,</span><span class="ansi-yellow-fg ansi-bold">
+</span>    alpha<span class="ansi-yellow-fg ansi-bold">=</span><span class="ansi-green-fg ansi-bold">None</span><span class="ansi-yellow-fg ansi-bold">,</span><span class="ansi-yellow-fg ansi-bold">
+</span>    vmin<span class="ansi-yellow-fg ansi-bold">=</span><span class="ansi-green-fg ansi-bold">None</span><span class="ansi-yellow-fg ansi-bold">,</span><span class="ansi-yellow-fg ansi-bold">
+</span>    vmax<span class="ansi-yellow-fg ansi-bold">=</span><span class="ansi-green-fg ansi-bold">None</span><span class="ansi-yellow-fg ansi-bold">,</span><span class="ansi-yellow-fg ansi-bold">
+</span>    origin<span class="ansi-yellow-fg ansi-bold">=</span><span class="ansi-green-fg ansi-bold">None</span><span class="ansi-yellow-fg ansi-bold">,</span><span class="ansi-yellow-fg ansi-bold">
+</span>    extent<span class="ansi-yellow-fg ansi-bold">=</span><span class="ansi-green-fg ansi-bold">None</span><span class="ansi-yellow-fg ansi-bold">,</span><span class="ansi-yellow-fg ansi-bold">
+</span>    interpolation_stage<span class="ansi-yellow-fg ansi-bold">=</span><span class="ansi-green-fg ansi-bold">None</span><span class="ansi-yellow-fg ansi-bold">,</span><span class="ansi-yellow-fg ansi-bold">
+</span>    filternorm<span class="ansi-yellow-fg ansi-bold">=</span><span class="ansi-green-fg ansi-bold">True</span><span class="ansi-yellow-fg ansi-bold">,</span><span class="ansi-yellow-fg ansi-bold">
+</span>    filterrad<span class="ansi-yellow-fg ansi-bold">=</span><span class="ansi-cyan-fg ansi-bold">4.0</span><span class="ansi-yellow-fg ansi-bold">,</span><span class="ansi-yellow-fg ansi-bold">
+</span>    resample<span class="ansi-yellow-fg ansi-bold">=</span><span class="ansi-green-fg ansi-bold">None</span><span class="ansi-yellow-fg ansi-bold">,</span><span class="ansi-yellow-fg ansi-bold">
+</span>    url<span class="ansi-yellow-fg ansi-bold">=</span><span class="ansi-green-fg ansi-bold">None</span><span class="ansi-yellow-fg ansi-bold">,</span><span class="ansi-yellow-fg ansi-bold">
+</span>    data<span class="ansi-yellow-fg ansi-bold">=</span><span class="ansi-green-fg ansi-bold">None</span><span class="ansi-yellow-fg ansi-bold">,</span><span class="ansi-yellow-fg ansi-bold">
+</span>    <span class="ansi-yellow-fg ansi-bold">**</span>kwargs<span class="ansi-yellow-fg ansi-bold">,</span><span class="ansi-yellow-fg ansi-bold">
+</span><span class="ansi-yellow-fg ansi-bold">)</span>
+<span class="ansi-red-fg ansi-bold">Docstring:</span>
+Display data as an image, i.e., on a 2D regular raster.
+The input may either be actual RGB(A) data, or 2D scalar data, which
+will be rendered as a pseudocolor image. For displaying a grayscale
+image set up the colormapping using the parameters
+``cmap='gray', vmin=0, vmax=255``.
+The number of pixels used to render an image is set by the Axes size
+and the *dpi* of the figure. This can lead to aliasing artifacts when
+the image is resampled because the displayed image size will usually
+not match the size of *X* (see
+:doc:`/gallery/images_contours_and_fields/image_antialiasing`).
+The resampling can be controlled via the *interpolation* parameter
+and/or :rc:`image.interpolation`.
+Parameters
+----------
+X : array-like or PIL image
+    The image data. Supported array shapes are:
+    - (M, N): an image with scalar data. The values are mapped to
+      colors using normalization and a colormap. See parameters *norm*,
+      *cmap*, *vmin*, *vmax*.
+    - (M, N, 3): an image with RGB values (0-1 float or 0-255 int).
+    - (M, N, 4): an image with RGBA values (0-1 float or 0-255 int),
+      i.e. including transparency.
+    The first two dimensions (M, N) define the rows and columns of
+    the image.
+    Out-of-range RGB(A) values are clipped.
+cmap : str or `~matplotlib.colors.Colormap`, default: :rc:`image.cmap`
+    The Colormap instance or registered colormap name used to map scalar data
+    to colors.
+    This parameter is ignored if *X* is RGB(A).
+norm : str or `~matplotlib.colors.Normalize`, optional
+    The normalization method used to scale scalar data to the [0, 1] range
+    before mapping to colors using *cmap*. By default, a linear scaling is
+    used, mapping the lowest value to 0 and the highest to 1.
+    If given, this can be one of the following:
+    - An instance of `.Normalize` or one of its subclasses
+      (see :doc:`/tutorials/colors/colormapnorms`).
+    - A scale name, i.e. one of "linear", "log", "symlog", "logit", etc.  For a
+      list of available scales, call `matplotlib.scale.get_scale_names()`.
+      In that case, a suitable `.Normalize` subclass is dynamically generated
+      and instantiated.
+    This parameter is ignored if *X* is RGB(A).
+vmin, vmax : float, optional
+    When using scalar data and no explicit *norm*, *vmin* and *vmax* define
+    the data range that the colormap covers. By default, the colormap covers
+    the complete value range of the supplied data. It is an error to use
+    *vmin*/*vmax* when a *norm* instance is given (but using a `str` *norm*
+    name together with *vmin*/*vmax* is acceptable).
+    This parameter is ignored if *X* is RGB(A).
+aspect : {'equal', 'auto'} or float, default: :rc:`image.aspect`
+    The aspect ratio of the Axes.  This parameter is particularly
+    relevant for images since it determines whether data pixels are
+    square.
+    This parameter is a shortcut for explicitly calling
+    `.Axes.set_aspect`. See there for further details.
+    - 'equal': Ensures an aspect ratio of 1. Pixels will be square
+      (unless pixel sizes are explicitly made non-square in data
+      coordinates using *extent*).
+    - 'auto': The Axes is kept fixed and the aspect is adjusted so
+      that the data fit in the Axes. In general, this will result in
+      non-square pixels.
+interpolation : str, default: :rc:`image.interpolation`
+    The interpolation method used.
+    Supported values are 'none', 'antialiased', 'nearest', 'bilinear',
+    'bicubic', 'spline16', 'spline36', 'hanning', 'hamming', 'hermite',
+    'kaiser', 'quadric', 'catrom', 'gaussian', 'bessel', 'mitchell',
+    'sinc', 'lanczos', 'blackman'.
+    If *interpolation* is 'none', then no interpolation is performed
+    on the Agg, ps, pdf and svg backends. Other backends will fall back
+    to 'nearest'. Note that most SVG renderers perform interpolation at
+    rendering and that the default interpolation method they implement
+    may differ.
+    If *interpolation* is the default 'antialiased', then 'nearest'
+    interpolation is used if the image is upsampled by more than a
+    factor of three (i.e. the number of display pixels is at least
+    three times the size of the data array).  If the upsampling rate is
+    smaller than 3, or the image is downsampled, then 'hanning'
+    interpolation is used to act as an anti-aliasing filter, unless the
+    image happens to be upsampled by exactly a factor of two or one.
+    See
+    :doc:`/gallery/images_contours_and_fields/interpolation_methods`
+    for an overview of the supported interpolation methods, and
+    :doc:`/gallery/images_contours_and_fields/image_antialiasing` for
+    a discussion of image antialiasing.
+    Some interpolation methods require an additional radius parameter,
+    which can be set by *filterrad*. Additionally, the antigrain image
+    resize filter is controlled by the parameter *filternorm*.
+interpolation_stage : {'data', 'rgba'}, default: 'data'
+    If 'data', interpolation
+    is carried out on the data provided by the user.  If 'rgba', the
+    interpolation is carried out after the colormapping has been
+    applied (visual interpolation).
+alpha : float or array-like, optional
+    The alpha blending value, between 0 (transparent) and 1 (opaque).
+    If *alpha* is an array, the alpha blending values are applied pixel
+    by pixel, and *alpha* must have the same shape as *X*.
+origin : {'upper', 'lower'}, default: :rc:`image.origin`
+    Place the [0, 0] index of the array in the upper left or lower
+    left corner of the Axes. The convention (the default) 'upper' is
+    typically used for matrices and images.
+    Note that the vertical axis points upward for 'lower'
+    but downward for 'upper'.
+    See the :doc:`/tutorials/intermediate/imshow_extent` tutorial for
+    examples and a more detailed description.
+extent : floats (left, right, bottom, top), optional
+    The bounding box in data coordinates that the image will fill.
+    These values may be unitful and match the units of the Axes.
+    The image is stretched individually along x and y to fill the box.
+    The default extent is determined by the following conditions.
+    Pixels have unit size in data coordinates. Their centers are on
+    integer coordinates, and their center coordinates range from 0 to
+    columns-1 horizontally and from 0 to rows-1 vertically.
+    Note that the direction of the vertical axis and thus the default
+    values for top and bottom depend on *origin*:
+    - For ``origin == 'upper'`` the default is
+      ``(-0.5, numcols-0.5, numrows-0.5, -0.5)``.
+    - For ``origin == 'lower'`` the default is
+      ``(-0.5, numcols-0.5, -0.5, numrows-0.5)``.
+    See the :doc:`/tutorials/intermediate/imshow_extent` tutorial for
+    examples and a more detailed description.
+filternorm : bool, default: True
+    A parameter for the antigrain image resize filter (see the
+    antigrain documentation).  If *filternorm* is set, the filter
+    normalizes integer values and corrects the rounding errors. It
+    doesn't do anything with the source floating point values, it
+    corrects only integers according to the rule of 1.0 which means
+    that any sum of pixel weights must be equal to 1.0.  So, the
+    filter function must produce a graph of the proper shape.
+filterrad : float &gt; 0, default: 4.0
+    The filter radius for filters that have a radius parameter, i.e.
+    when interpolation is one of: 'sinc', 'lanczos' or 'blackman'.
+resample : bool, default: :rc:`image.resample`
+    When *True*, use a full resampling method.  When *False*, only
+    resample when the output image is larger than the input image.
+url : str, optional
+    Set the url of the created `.AxesImage`. See `.Artist.set_url`.
+Returns
+-------
+`~matplotlib.image.AxesImage`
+Other Parameters
+----------------
+data : indexable object, optional
+    If given, all parameters also accept a string ``s``, which is
+    interpreted as ``data[s]`` (unless this raises an exception).
+**kwargs : `~matplotlib.artist.Artist` properties
+    These parameters are passed on to the constructor of the
+    `.AxesImage` artist.
+See Also
+--------
+matshow : Plot a matrix or an array as an image.
+Notes
+-----
+Unless *extent* is used, pixel centers will be located at integer
+coordinates. In other words: the origin will coincide with the center
+of pixel (0, 0).
+There are two common representations for RGB images with an alpha
+channel:
+-   Straight (unassociated) alpha: R, G, and B channels represent the
+    color of the pixel, disregarding its opacity.
+-   Premultiplied (associated) alpha: R, G, and B channels represent
+    the color of the pixel, adjusted for its opacity by multiplication.
+`~matplotlib.pyplot.imshow` expects RGB images adopting the straight
+(unassociated) alpha representation.
+<span class="ansi-red-fg ansi-bold">File:</span>      c:\users\elias\anaconda3\lib\site-packages\matplotlib\pyplot.py
+<span class="ansi-red-fg ansi-bold">Type:</span>      function</pre>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="175">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>matplotlib.scale.get_scale_names()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="175">
+<pre><code>['asinh', 'function', 'functionlog', 'linear', 'log', 'logit', 'symlog']</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="59">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>plt.imshow(rand_data, cmap<span class="op">=</span><span class="st">'hot'</span>, interpolation<span class="op">=</span><span class="st">'nearest'</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>plt.colorbar()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="59">
+<pre><code>&lt;matplotlib.colorbar.Colorbar at 0x218a4d27d90&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="DBExplor_files/figure-html/cell-11-output-2.svg" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="exploring-infection-waves" class="level3">
+<h3 class="anchored" data-anchor-id="exploring-infection-waves">Exploring Infection Waves</h3>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>cas_ <span class="op">=</span> <span class="op">\</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>(cas_</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a> .assign(created_at<span class="op">=</span>pd.to_datetime(cas_.created_at, dayfirst<span class="op">=</span><span class="va">True</span>))</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a> .set_index(<span class="st">'created_at'</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> remove_nonpositive(df):</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df[df.ge(<span class="dv">0</span>)]</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>ticks_ <span class="op">=</span> pd.date_range(start <span class="op">=</span> <span class="st">'2020/03/13'</span>, end <span class="op">=</span> <span class="st">'2022/09/12'</span>, freq <span class="op">=</span> <span class="st">'q'</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>axes <span class="op">=</span> <span class="op">\</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>(cas_</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a> [[<span class="st">'muertes_nuevas'</span>, <span class="st">'positivas_pcr_nuevas'</span>]]</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a> .pipe(remove_nonpositive)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a> .resample(<span class="st">'2w'</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a> .<span class="bu">sum</span>()</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a> .plot(</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>     subplots<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>     figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>),</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>     xlabel<span class="op">=</span><span class="st">''</span>,</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>     xticks<span class="op">=</span>ticks_</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a> )</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, label <span class="kw">in</span> <span class="bu">zip</span>(axes, [<span class="st">'Nuevas Muertes'</span>, <span class="st">'Nuevos Positivos'</span>]):</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    ax.set_xticklabels(ticks_.<span class="bu">format</span>(date_format<span class="op">=</span><span class="st">'%Y/%m'</span>))</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>    ax.grid(<span class="va">False</span>)</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>    ax.legend([label])</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> spine <span class="kw">in</span> [<span class="st">'top'</span>, <span class="st">'right'</span>]:</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>        ax.spines[spine].set_visible(<span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="DBExplor_files/figure-html/cell-19-output-1.svg" class="img-fluid"></p>
+</div>
+</div>
+<p>The first wave appears to have taken place between April and May of 2020. From the graph, it seems to have been particularly deadly as it presents the second major peak in deaths. It may be due to the fact that not testing was not widespread. The second wave may be place in the first quarter of 2021. In either July or August the number of deaths increases to a suspicous high. Finally, around the first quarter of 2022 there is a new high in cases. After that point cases present another peak but without impacting the death toll.</p>
+</section>
+<section id="exploring-the-lineages-that-caused-the-waves" class="level3">
+<h3 class="anchored" data-anchor-id="exploring-the-lineages-that-caused-the-waves">Exploring the lineages that caused the waves</h3>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>(df</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a> .loc[<span class="st">'2020/03'</span>:<span class="st">'2020/06'</span>]</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a> .groupby([<span class="st">'linaje'</span>])</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a> .agg({<span class="st">'linaje'</span>:<span class="st">'count'</span>})</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a> .rename(columns<span class="op">=</span>{<span class="st">'linaje'</span>:<span class="st">'Relative Percentage'</span>})</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a> .<span class="bu">apply</span>(<span class="kw">lambda</span> s: s <span class="op">/</span> s.<span class="bu">sum</span>())</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a> .sort_values(by <span class="op">=</span> <span class="st">'Relative Percentage'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a> [:<span class="dv">5</span>]</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a> .style</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a> .set_caption(<span class="st">'(Mar-Jun 2020)'</span>)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a> .background_gradient(axis<span class="op">=</span><span class="va">None</span>, vmin<span class="op">=</span><span class="fl">0.02</span>, vmax<span class="op">=</span><span class="fl">0.20</span>, cmap<span class="op">=</span><span class="st">'inferno'</span>)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a> .<span class="bu">format</span>(<span class="kw">lambda</span> x: <span class="ss">f'</span><span class="sc">{</span>x <span class="op">*</span> <span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%'</span>)</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>C:\Users\Elias\AppData\Local\Temp\ipykernel_28576\290477614.py:1: FutureWarning: Value based partial slicing on non-monotonic DatetimeIndexes with non-existing keys is deprecated and will raise a KeyError in a future Version.
+  (df</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<style type="text/css">
+#T_e4086_row0_col0 {
+  background-color: #fcffa4;
+  color: #000000;
+}
+#T_e4086_row1_col0 {
+  background-color: #fbba1f;
+  color: #000000;
+}
+#T_e4086_row2_col0 {
+  background-color: #f06f20;
+  color: #f1f1f1;
+}
+#T_e4086_row3_col0 {
+  background-color: #440a68;
+  color: #f1f1f1;
+}
+#T_e4086_row4_col0 {
+  background-color: #07051b;
+  color: #f1f1f1;
+}
+</style>
+
+<table id="T_e4086_" data-quarto-postprocess="true" class="table table-sm table-striped small">
+<caption>(Mar-Jun 2020)</caption>
+<thead>
+<tr class="header">
+<th class="blank level0" data-quarto-table-cell-role="th">&nbsp;</th>
+<th class="col_heading level0 col0" data-quarto-table-cell-role="th">Relative Percentage</th>
+</tr>
+<tr class="odd">
+<th class="index_name level0" data-quarto-table-cell-role="th">linaje</th>
+<th class="blank col0" data-quarto-table-cell-role="th">&nbsp;</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td id="T_e4086_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">B.1.1</td>
+<td id="T_e4086_row0_col0" class="data row0 col0">45.71%</td>
+</tr>
+<tr class="even">
+<td id="T_e4086_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">B.1</td>
+<td id="T_e4086_row1_col0" class="data row1 col0">17.14%</td>
+</tr>
+<tr class="odd">
+<td id="T_e4086_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">B.1.67</td>
+<td id="T_e4086_row2_col0" class="data row2 col0">14.29%</td>
+</tr>
+<tr class="even">
+<td id="T_e4086_level0_row3" class="row_heading level0 row3" data-quarto-table-cell-role="th">B.1.14</td>
+<td id="T_e4086_row3_col0" class="data row3 col0">5.71%</td>
+</tr>
+<tr class="odd">
+<td id="T_e4086_level0_row4" class="row_heading level0 row4" data-quarto-table-cell-role="th">B.1.1.1</td>
+<td id="T_e4086_row4_col0" class="data row4 col0">2.86%</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>(df</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a> .loc[<span class="st">'2021/01'</span>:<span class="st">'2021/04'</span>]</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a> .groupby([<span class="st">'linaje'</span>])</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a> .agg({<span class="st">'linaje'</span>:<span class="st">'count'</span>})</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a> .rename(columns<span class="op">=</span>{<span class="st">'linaje'</span>:<span class="st">'Relative Percentage'</span>})</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a> .<span class="bu">apply</span>(<span class="kw">lambda</span> s: s <span class="op">/</span> s.<span class="bu">sum</span>())</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a> .sort_values(by<span class="op">=</span><span class="st">'Relative Percentage'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a> [:<span class="dv">5</span>]</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a> .style</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a> .set_caption(<span class="st">'(Jan-Apr 2021)'</span>)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a> .background_gradient(axis<span class="op">=</span><span class="va">None</span>, vmin<span class="op">=</span><span class="fl">0.06</span>, vmax<span class="op">=</span><span class="fl">0.22</span>, cmap<span class="op">=</span><span class="st">'inferno'</span>)</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a> .<span class="bu">format</span>(<span class="kw">lambda</span> x: <span class="ss">f'</span><span class="sc">{</span>x <span class="op">*</span> <span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%'</span>)</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<style type="text/css">
+#T_18813_row0_col0 {
+  background-color: #fcffa4;
+  color: #000000;
+}
+#T_18813_row1_col0 {
+  background-color: #f37819;
+  color: #f1f1f1;
+}
+#T_18813_row2_col0 {
+  background-color: #a82e5f;
+  color: #f1f1f1;
+}
+#T_18813_row3_col0 {
+  background-color: #09061f;
+  color: #f1f1f1;
+}
+#T_18813_row4_col0 {
+  background-color: #02020c;
+  color: #f1f1f1;
+}
+</style>
+
+<table id="T_18813_" data-quarto-postprocess="true" class="table table-sm table-striped small">
+<caption>(Jan-Apr 2021)</caption>
+<thead>
+<tr class="header">
+<th class="blank level0" data-quarto-table-cell-role="th">&nbsp;</th>
+<th class="col_heading level0 col0" data-quarto-table-cell-role="th">Relative Percentage</th>
+</tr>
+<tr class="odd">
+<th class="index_name level0" data-quarto-table-cell-role="th">linaje</th>
+<th class="blank col0" data-quarto-table-cell-role="th">&nbsp;</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td id="T_18813_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">B.1.1.7</td>
+<td id="T_18813_row0_col0" class="data row0 col0">22.41%</td>
+</tr>
+<tr class="even">
+<td id="T_18813_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">B.1.1</td>
+<td id="T_18813_row1_col0" class="data row1 col0">17.24%</td>
+</tr>
+<tr class="odd">
+<td id="T_18813_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">B.1.526</td>
+<td id="T_18813_row2_col0" class="data row2 col0">13.22%</td>
+</tr>
+<tr class="even">
+<td id="T_18813_level0_row3" class="row_heading level0 row3" data-quarto-table-cell-role="th">B</td>
+<td id="T_18813_row3_col0" class="data row3 col0">6.90%</td>
+</tr>
+<tr class="odd">
+<td id="T_18813_level0_row4" class="row_heading level0 row4" data-quarto-table-cell-role="th">B.1</td>
+<td id="T_18813_row4_col0" class="data row4 col0">6.32%</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>(df</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a> .loc[<span class="st">'2021/12'</span>:<span class="st">'2022/03'</span>]</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a> .groupby([<span class="st">'linaje'</span>])</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a> .agg({<span class="st">'linaje'</span>:<span class="st">'count'</span>})</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a> .rename(columns<span class="op">=</span>{<span class="st">'linaje'</span>:<span class="st">'Relative Percentage'</span>})</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a> .<span class="bu">apply</span>(<span class="kw">lambda</span> s: s <span class="op">/</span> s.<span class="bu">sum</span>())</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a> .sort_values(by<span class="op">=</span><span class="st">'Relative Percentage'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a> [:<span class="dv">5</span>]</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a> .style</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a> .set_caption(<span class="st">'(Dic 21-Mar 2022)'</span>)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a> .background_gradient(axis<span class="op">=</span><span class="va">None</span>, vmin<span class="op">=</span><span class="fl">0.3</span>, vmax<span class="op">=</span><span class="fl">0.43</span>, cmap<span class="op">=</span><span class="st">'inferno'</span>)</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a> .<span class="bu">format</span>(<span class="kw">lambda</span> x: <span class="ss">f'</span><span class="sc">{</span>x <span class="op">*</span> <span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%'</span>)</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<style type="text/css">
+#T_d2544_row0_col0 {
+  background-color: #f2ea69;
+  color: #000000;
+}
+#T_d2544_row1_col0, #T_d2544_row2_col0, #T_d2544_row3_col0, #T_d2544_row4_col0 {
+  background-color: #000004;
+  color: #f1f1f1;
+}
+</style>
+
+<table id="T_d2544_" data-quarto-postprocess="true" class="table table-sm table-striped small">
+<caption>(Dic 21-Mar 2022)</caption>
+<thead>
+<tr class="header">
+<th class="blank level0" data-quarto-table-cell-role="th">&nbsp;</th>
+<th class="col_heading level0 col0" data-quarto-table-cell-role="th">Relative Percentage</th>
+</tr>
+<tr class="odd">
+<th class="index_name level0" data-quarto-table-cell-role="th">linaje</th>
+<th class="blank col0" data-quarto-table-cell-role="th">&nbsp;</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td id="T_d2544_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">Ba.1.1</td>
+<td id="T_d2544_row0_col0" class="data row0 col0">42.21%</td>
+</tr>
+<tr class="even">
+<td id="T_d2544_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">Ba.1.14</td>
+<td id="T_d2544_row1_col0" class="data row1 col0">19.36%</td>
+</tr>
+<tr class="odd">
+<td id="T_d2544_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">Ba.1</td>
+<td id="T_d2544_row2_col0" class="data row2 col0">4.54%</td>
+</tr>
+<tr class="even">
+<td id="T_d2544_level0_row3" class="row_heading level0 row3" data-quarto-table-cell-role="th">Ay.100</td>
+<td id="T_d2544_row3_col0" class="data row3 col0">4.54%</td>
+</tr>
+<tr class="odd">
+<td id="T_d2544_level0_row4" class="row_heading level0 row4" data-quarto-table-cell-role="th">Ay.122</td>
+<td id="T_d2544_row4_col0" class="data row4 col0">3.93%</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="anomalies" class="level3">
+<h3 class="anchored" data-anchor-id="anomalies">Anomalies</h3>
+<div class="cell" data-execution_count="61">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On June 5th 2020, for the column `positivas_pcr_nuevas` </span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># there is a negative value</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>(cas_</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a> .loc[<span class="st">'2020/05/06'</span>]</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a> [<span class="st">'positivas_pcr_nuevas'</span>]</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="61">
+<pre><code>-2498</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="62">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>(cas_</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a> .loc[<span class="st">'2020/05/08'</span>]</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a> [<span class="st">'positivas_pcr_nuevas'</span>]</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="62">
+<pre><code>-1480</code></pre>
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

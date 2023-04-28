@@ -1,0 +1,2016 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.340">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Exploring the prevalence of variants</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="DBExplor_files/libs/clipboard/clipboard.min.js"></script>
+<script src="DBExplor_files/libs/quarto-html/quarto.js"></script>
+<script src="DBExplor_files/libs/quarto-html/popper.min.js"></script>
+<script src="DBExplor_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="DBExplor_files/libs/quarto-html/anchor.min.js"></script>
+<link href="DBExplor_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="DBExplor_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="DBExplor_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="DBExplor_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="DBExplor_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Exploring the prevalence of variants</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> unidecode <span class="im">import</span> unidecode</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.colors <span class="im">import</span> ListedColormap</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>sns.<span class="bu">set</span>(style<span class="op">=</span><span class="st">'whitegrid'</span>, rc<span class="op">=</span>{<span class="st">'figure.figsize'</span>:(<span class="dv">16</span>, <span class="dv">4</span>)})</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># I want crisp graphics, so we'll output SVG</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_format <span class="op">=</span> <span class="st">'svg'</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> pd.read_csv(<span class="st">'../data/raw/raw_base_junio.csv'</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>cas_ <span class="op">=</span> pd.read_csv(<span class="st">'https://raw.githubusercontent.com/andrab/ecuacovid/master/datos_crudos/ecuacovid.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tweak_covid(df):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (df</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>         .rename(columns<span class="op">=</span><span class="kw">lambda</span> c:unidecode(c.replace(<span class="st">' '</span>, <span class="st">'_'</span>).lower()))</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>         .drop(columns<span class="op">=</span>[<span class="st">'gisaid_id'</span>, <span class="st">'unnamed:_1'</span>, <span class="st">'fecha_de_subida_a_gisaid'</span>])</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>         .drop(index<span class="op">=</span>df[df.Edad.<span class="bu">str</span>.contains(<span class="st">'months'</span>)<span class="op">==</span><span class="va">True</span>].index)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>         .dropna(subset<span class="op">=</span>[<span class="st">'linaje'</span>, <span class="st">'clado'</span>, <span class="st">'mutaciones'</span>])</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>         .applymap(<span class="kw">lambda</span> tx: unidecode(tx.title()) <span class="cf">if</span> <span class="bu">isinstance</span>(tx, <span class="bu">str</span>) <span class="cf">else</span> tx)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>         .assign(fecha_de_coleccion<span class="op">=</span><span class="kw">lambda</span> df_:pd.to_datetime(df_.fecha_de_coleccion),</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>                 edad<span class="op">=</span><span class="kw">lambda</span> df_:(df_</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>                                  .edad</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>                                  .replace(to_replace<span class="op">=</span>[<span class="st">'Unknown'</span>, <span class="st">'M'</span>], value<span class="op">=</span>np.nan)), <span class="co"># neither floats nor int are nullable</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>                 virus_name_unidentified<span class="op">=</span><span class="kw">lambda</span> df_:(df_</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>                                                     .virus_name</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>                                                     .<span class="bu">str</span>.split(<span class="st">'/'</span>, expand<span class="op">=</span><span class="va">True</span>)[<span class="dv">2</span>]),</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>                 count_muts<span class="op">=</span><span class="kw">lambda</span> df_:(df_</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>                                        .mutaciones</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>                                        .<span class="bu">str</span>.replace(pat<span class="op">=</span><span class="st">'[()]'</span>, repl<span class="op">=</span><span class="st">''</span>, regex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>                                        .<span class="bu">str</span>.split(<span class="st">','</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>                                        .<span class="bu">apply</span>(<span class="kw">lambda</span> l:<span class="bu">len</span>(l) <span class="cf">if</span> <span class="bu">isinstance</span>(l, <span class="bu">list</span>) <span class="cf">else</span> l)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>                                        .astype(<span class="st">'uint16'</span>))</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>                )</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>         .drop(columns<span class="op">=</span>[<span class="st">'virus_name'</span>])</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>         .set_index(<span class="st">'fecha_de_coleccion'</span>)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> tweak_covid(raw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">provincia</th>
+<th data-quarto-table-cell-role="th">ciudad</th>
+<th data-quarto-table-cell-role="th">tipo</th>
+<th data-quarto-table-cell-role="th">genero</th>
+<th data-quarto-table-cell-role="th">edad</th>
+<th data-quarto-table-cell-role="th">linaje</th>
+<th data-quarto-table-cell-role="th">clado</th>
+<th data-quarto-table-cell-role="th">mutaciones</th>
+<th data-quarto-table-cell-role="th">virus_name_unidentified</th>
+<th data-quarto-table-cell-role="th">count_muts</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">fecha_de_coleccion</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2020-03-09</td>
+<td>Pichincha</td>
+<td>Quito</td>
+<td>Hospital</td>
+<td>Male</td>
+<td>57</td>
+<td>B.55</td>
+<td>L</td>
+<td>Spike E1207V</td>
+<td>Hee-01</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2020-03-30</td>
+<td>Pichincha</td>
+<td>Quito</td>
+<td>Hospital</td>
+<td>Male</td>
+<td>27</td>
+<td>B.1.1</td>
+<td>Gr</td>
+<td>(N_R203K,N_G204R,Nsp12_P323L,Nsp3_L431F,Spike_...</td>
+<td>Hgsq-Usfq-018</td>
+<td>5</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2020-03-30</td>
+<td>Pichincha</td>
+<td>Quito</td>
+<td>Hospital</td>
+<td>Male</td>
+<td>40</td>
+<td>B.1.14</td>
+<td>O</td>
+<td>(Nsp15_S293T,Ns3_Q38P,Ns3_V163T,Ns3_R122E,Ns3_...</td>
+<td>Hgsq-Usfq-007</td>
+<td>18</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2020-03-30</td>
+<td>Pichincha</td>
+<td>Quito</td>
+<td>Hospital</td>
+<td>Male</td>
+<td>39</td>
+<td>B.1.14</td>
+<td>O</td>
+<td>(Nsp15_S293T,Ns3_Q38P,Ns3_V163T,Ns3_R122E,Ns3_...</td>
+<td>Hgsq-Usfq-010</td>
+<td>18</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2020-04-17</td>
+<td>Los Rios</td>
+<td>Babahoyo</td>
+<td>Hospital</td>
+<td>Female</td>
+<td>50</td>
+<td>B.1.67</td>
+<td>G</td>
+<td>(Nsp12_P323L,Spike_D614G)</td>
+<td>Usfq-020</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2022-05-27</td>
+<td>Pichincha</td>
+<td>Quito</td>
+<td>Ambulatorio</td>
+<td>Male</td>
+<td>42</td>
+<td>Ba.2</td>
+<td>Gra</td>
+<td>(Nsp5_P132H,Nsp3_G489S,Nsp4_T327I,Spike_S373P,...</td>
+<td>Usfq-3477</td>
+<td>53</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2022-05-28</td>
+<td>Pichincha</td>
+<td>Quito</td>
+<td>Ambulatorio</td>
+<td>Male</td>
+<td>54</td>
+<td>Ba.2</td>
+<td>Gra</td>
+<td>(Nsp5_P132H,Nsp3_G489S,Spike_L24Del,Nsp4_T327I...</td>
+<td>Usfq-3479</td>
+<td>61</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2022-05-29</td>
+<td>Pichincha</td>
+<td>Quito</td>
+<td>Ambulatorio</td>
+<td>Male</td>
+<td>5</td>
+<td>Ba.2</td>
+<td>Gra</td>
+<td>(Nsp5_P132H,Nsp3_G489S,Nsp4_T327I,Spike_S373P,...</td>
+<td>Usfq-3482</td>
+<td>51</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2022-05-25</td>
+<td>Pichincha</td>
+<td>Quito</td>
+<td>Ambulatorio</td>
+<td>Male</td>
+<td>34</td>
+<td>Ba.2</td>
+<td>Gra</td>
+<td>(Nsp5_P132H,Spike_S371F,Nsp3_G489S,Nsp13_R392C...</td>
+<td>Usfq-3483</td>
+<td>47</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2022-05-30</td>
+<td>Pichincha</td>
+<td>Quito</td>
+<td>Ambulatorio</td>
+<td>Female</td>
+<td>67</td>
+<td>Ba.2.9</td>
+<td>Gra</td>
+<td>(Nsp5_P132H,Nsp3_G489S,Spike_L24Del,Nsp4_T327I...</td>
+<td>Usfq-3484</td>
+<td>56</td>
+</tr>
+</tbody>
+</table>
+
+<p>1645 rows × 10 columns</p>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Which variants have occurred more frequently</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> pd.option_context(<span class="st">'max_rows'</span>, <span class="va">None</span>):</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    display(</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        (df</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>         .groupby([<span class="st">'linaje'</span>])</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>         .agg({<span class="st">'linaje'</span>:<span class="st">'count'</span>})</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>         .rename(columns<span class="op">=</span>{<span class="st">'linaje'</span>:<span class="st">'Rel. Perc'</span>})</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>         .<span class="bu">apply</span>(<span class="kw">lambda</span> s: s <span class="op">/</span> s.<span class="bu">sum</span>())</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>         .sort_values(by<span class="op">=</span><span class="st">'Rel. Perc'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>         .style</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>         .set_caption(<span class="st">'Prevalencia de Variantes'</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>         .background_gradient(axis<span class="op">=</span><span class="va">None</span>, vmin<span class="op">=</span><span class="dv">0</span>, vmax<span class="op">=</span><span class="fl">0.20</span>, cmap<span class="op">=</span><span class="st">'inferno'</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>         .<span class="bu">format</span>(<span class="kw">lambda</span> x: <span class="ss">f'</span><span class="sc">{</span>x <span class="op">*</span> <span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%'</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        )     </span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<style type="text/css">
+#T_7717c_row0_col0 {
+  background-color: #f5d949;
+  color: #000000;
+}
+#T_7717c_row1_col0 {
+  background-color: #d34743;
+  color: #f1f1f1;
+}
+#T_7717c_row2_col0 {
+  background-color: #902568;
+  color: #f1f1f1;
+}
+#T_7717c_row3_col0 {
+  background-color: #751b6e;
+  color: #f1f1f1;
+}
+#T_7717c_row4_col0 {
+  background-color: #71196e;
+  color: #f1f1f1;
+}
+#T_7717c_row5_col0 {
+  background-color: #62146e;
+  color: #f1f1f1;
+}
+#T_7717c_row6_col0, #T_7717c_row7_col0 {
+  background-color: #380962;
+  color: #f1f1f1;
+}
+#T_7717c_row8_col0 {
+  background-color: #310a5c;
+  color: #f1f1f1;
+}
+#T_7717c_row9_col0 {
+  background-color: #2d0b59;
+  color: #f1f1f1;
+}
+#T_7717c_row10_col0, #T_7717c_row11_col0 {
+  background-color: #1f0c48;
+  color: #f1f1f1;
+}
+#T_7717c_row12_col0 {
+  background-color: #160b39;
+  color: #f1f1f1;
+}
+#T_7717c_row13_col0 {
+  background-color: #10092d;
+  color: #f1f1f1;
+}
+#T_7717c_row14_col0 {
+  background-color: #0d0829;
+  color: #f1f1f1;
+}
+#T_7717c_row15_col0 {
+  background-color: #0b0724;
+  color: #f1f1f1;
+}
+#T_7717c_row16_col0, #T_7717c_row17_col0, #T_7717c_row18_col0 {
+  background-color: #09061f;
+  color: #f1f1f1;
+}
+#T_7717c_row19_col0 {
+  background-color: #08051d;
+  color: #f1f1f1;
+}
+#T_7717c_row20_col0 {
+  background-color: #060419;
+  color: #f1f1f1;
+}
+#T_7717c_row21_col0, #T_7717c_row22_col0 {
+  background-color: #050417;
+  color: #f1f1f1;
+}
+#T_7717c_row23_col0, #T_7717c_row24_col0 {
+  background-color: #040314;
+  color: #f1f1f1;
+}
+#T_7717c_row25_col0, #T_7717c_row26_col0, #T_7717c_row27_col0 {
+  background-color: #030210;
+  color: #f1f1f1;
+}
+#T_7717c_row28_col0, #T_7717c_row29_col0 {
+  background-color: #02020e;
+  color: #f1f1f1;
+}
+#T_7717c_row30_col0, #T_7717c_row31_col0, #T_7717c_row32_col0 {
+  background-color: #02020c;
+  color: #f1f1f1;
+}
+#T_7717c_row33_col0 {
+  background-color: #02010a;
+  color: #f1f1f1;
+}
+#T_7717c_row34_col0, #T_7717c_row35_col0, #T_7717c_row36_col0, #T_7717c_row37_col0, #T_7717c_row38_col0, #T_7717c_row39_col0, #T_7717c_row40_col0, #T_7717c_row41_col0 {
+  background-color: #010108;
+  color: #f1f1f1;
+}
+#T_7717c_row42_col0, #T_7717c_row43_col0, #T_7717c_row44_col0, #T_7717c_row45_col0, #T_7717c_row46_col0, #T_7717c_row47_col0 {
+  background-color: #010106;
+  color: #f1f1f1;
+}
+#T_7717c_row48_col0, #T_7717c_row49_col0, #T_7717c_row50_col0, #T_7717c_row51_col0, #T_7717c_row52_col0, #T_7717c_row53_col0, #T_7717c_row54_col0, #T_7717c_row55_col0, #T_7717c_row56_col0, #T_7717c_row57_col0, #T_7717c_row58_col0, #T_7717c_row59_col0, #T_7717c_row60_col0, #T_7717c_row61_col0, #T_7717c_row62_col0 {
+  background-color: #010005;
+  color: #f1f1f1;
+}
+#T_7717c_row63_col0, #T_7717c_row64_col0, #T_7717c_row65_col0, #T_7717c_row66_col0, #T_7717c_row67_col0, #T_7717c_row68_col0, #T_7717c_row69_col0, #T_7717c_row70_col0, #T_7717c_row71_col0, #T_7717c_row72_col0, #T_7717c_row73_col0, #T_7717c_row74_col0, #T_7717c_row75_col0, #T_7717c_row76_col0, #T_7717c_row77_col0, #T_7717c_row78_col0, #T_7717c_row79_col0, #T_7717c_row80_col0, #T_7717c_row81_col0, #T_7717c_row82_col0, #T_7717c_row83_col0, #T_7717c_row84_col0, #T_7717c_row85_col0, #T_7717c_row86_col0, #T_7717c_row87_col0, #T_7717c_row88_col0, #T_7717c_row89_col0, #T_7717c_row90_col0, #T_7717c_row91_col0, #T_7717c_row92_col0, #T_7717c_row93_col0, #T_7717c_row94_col0, #T_7717c_row95_col0 {
+  background-color: #000004;
+  color: #f1f1f1;
+}
+</style>
+
+<table id="T_7717c_" data-quarto-postprocess="true" class="table table-sm table-striped small">
+<caption>Prevalencia de Variantes</caption>
+<thead>
+<tr class="header">
+<th class="blank level0" data-quarto-table-cell-role="th">&nbsp;</th>
+<th class="col_heading level0 col0" data-quarto-table-cell-role="th">Rel. Perc</th>
+</tr>
+<tr class="odd">
+<th class="index_name level0" data-quarto-table-cell-role="th">linaje</th>
+<th class="blank col0" data-quarto-table-cell-role="th">&nbsp;</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td id="T_7717c_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">Ba.1.1</td>
+<td id="T_7717c_row0_col0" class="data row0 col0">18.12%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">B.1</td>
+<td id="T_7717c_row1_col0" class="data row1 col0">11.37%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">Ba.1.14</td>
+<td id="T_7717c_row2_col0" class="data row2 col0">7.84%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row3" class="row_heading level0 row3" data-quarto-table-cell-role="th">B.1.1</td>
+<td id="T_7717c_row3_col0" class="data row3 col0">6.50%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row4" class="row_heading level0 row4" data-quarto-table-cell-role="th">B.1.1.7</td>
+<td id="T_7717c_row4_col0" class="data row4 col0">6.32%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row5" class="row_heading level0 row5" data-quarto-table-cell-role="th">Ay.122</td>
+<td id="T_7717c_row5_col0" class="data row5 col0">5.59%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row6" class="row_heading level0 row6" data-quarto-table-cell-role="th">P.1</td>
+<td id="T_7717c_row6_col0" class="data row6 col0">3.59%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row7" class="row_heading level0 row7" data-quarto-table-cell-role="th">B.1.621</td>
+<td id="T_7717c_row7_col0" class="data row7 col0">3.53%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row8" class="row_heading level0 row8" data-quarto-table-cell-role="th">B.1.526</td>
+<td id="T_7717c_row8_col0" class="data row8 col0">3.22%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row9" class="row_heading level0 row9" data-quarto-table-cell-role="th">Ay.100</td>
+<td id="T_7717c_row9_col0" class="data row9 col0">3.10%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row10" class="row_heading level0 row10" data-quarto-table-cell-role="th">C.37</td>
+<td id="T_7717c_row10_col0" class="data row10 col0">2.43%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row11" class="row_heading level0 row11" data-quarto-table-cell-role="th">Ba.2</td>
+<td id="T_7717c_row11_col0" class="data row11 col0">2.43%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row12" class="row_heading level0 row12" data-quarto-table-cell-role="th">Ba.1</td>
+<td id="T_7717c_row12_col0" class="data row12 col0">2.01%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row13" class="row_heading level0 row13" data-quarto-table-cell-role="th">Unassigned</td>
+<td id="T_7717c_row13_col0" class="data row13 col0">1.58%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row14" class="row_heading level0 row14" data-quarto-table-cell-role="th">Ba.1.15</td>
+<td id="T_7717c_row14_col0" class="data row14 col0">1.46%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row15" class="row_heading level0 row15" data-quarto-table-cell-role="th">Ba.1.1.11</td>
+<td id="T_7717c_row15_col0" class="data row15 col0">1.28%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row16" class="row_heading level0 row16" data-quarto-table-cell-role="th">B</td>
+<td id="T_7717c_row16_col0" class="data row16 col0">1.09%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row17" class="row_heading level0 row17" data-quarto-table-cell-role="th">B.1.1.1</td>
+<td id="T_7717c_row17_col0" class="data row17 col0">1.09%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row18" class="row_heading level0 row18" data-quarto-table-cell-role="th">Ba.1.18</td>
+<td id="T_7717c_row18_col0" class="data row18 col0">1.09%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row19" class="row_heading level0 row19" data-quarto-table-cell-role="th">Ay.25.1</td>
+<td id="T_7717c_row19_col0" class="data row19 col0">1.03%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row20" class="row_heading level0 row20" data-quarto-table-cell-role="th">B.1.1.348</td>
+<td id="T_7717c_row20_col0" class="data row20 col0">0.91%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row21" class="row_heading level0 row21" data-quarto-table-cell-role="th">Ay.43</td>
+<td id="T_7717c_row21_col0" class="data row21 col0">0.85%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row22" class="row_heading level0 row22" data-quarto-table-cell-role="th">Ba.2.12.1</td>
+<td id="T_7717c_row22_col0" class="data row22 col0">0.79%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row23" class="row_heading level0 row23" data-quarto-table-cell-role="th">Ba.1.1.1</td>
+<td id="T_7717c_row23_col0" class="data row23 col0">0.73%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row24" class="row_heading level0 row24" data-quarto-table-cell-role="th">A.2.5.3</td>
+<td id="T_7717c_row24_col0" class="data row24 col0">0.73%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row25" class="row_heading level0 row25" data-quarto-table-cell-role="th">Ay.44</td>
+<td id="T_7717c_row25_col0" class="data row25 col0">0.55%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row26" class="row_heading level0 row26" data-quarto-table-cell-role="th">B.1.2</td>
+<td id="T_7717c_row26_col0" class="data row26 col0">0.55%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row27" class="row_heading level0 row27" data-quarto-table-cell-role="th">Ba.1.1.16</td>
+<td id="T_7717c_row27_col0" class="data row27 col0">0.55%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row28" class="row_heading level0 row28" data-quarto-table-cell-role="th">Ba.1.1.15</td>
+<td id="T_7717c_row28_col0" class="data row28 col0">0.49%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row29" class="row_heading level0 row29" data-quarto-table-cell-role="th">Ay.103</td>
+<td id="T_7717c_row29_col0" class="data row29 col0">0.49%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row30" class="row_heading level0 row30" data-quarto-table-cell-role="th">Ay.25</td>
+<td id="T_7717c_row30_col0" class="data row30 col0">0.43%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row31" class="row_heading level0 row31" data-quarto-table-cell-role="th">B.1.223</td>
+<td id="T_7717c_row31_col0" class="data row31 col0">0.43%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row32" class="row_heading level0 row32" data-quarto-table-cell-role="th">Ba.2.23</td>
+<td id="T_7717c_row32_col0" class="data row32 col0">0.43%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row33" class="row_heading level0 row33" data-quarto-table-cell-role="th">Ay.43.3</td>
+<td id="T_7717c_row33_col0" class="data row33 col0">0.36%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row34" class="row_heading level0 row34" data-quarto-table-cell-role="th">Ba.1.20</td>
+<td id="T_7717c_row34_col0" class="data row34 col0">0.30%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row35" class="row_heading level0 row35" data-quarto-table-cell-role="th">Ba.1.17</td>
+<td id="T_7717c_row35_col0" class="data row35 col0">0.30%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row36" class="row_heading level0 row36" data-quarto-table-cell-role="th">B.1.67</td>
+<td id="T_7717c_row36_col0" class="data row36 col0">0.30%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row37" class="row_heading level0 row37" data-quarto-table-cell-role="th">Ba.1.19</td>
+<td id="T_7717c_row37_col0" class="data row37 col0">0.24%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row38" class="row_heading level0 row38" data-quarto-table-cell-role="th">C.37.1</td>
+<td id="T_7717c_row38_col0" class="data row38 col0">0.24%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row39" class="row_heading level0 row39" data-quarto-table-cell-role="th">Ba.2.9</td>
+<td id="T_7717c_row39_col0" class="data row39 col0">0.24%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row40" class="row_heading level0 row40" data-quarto-table-cell-role="th">P.1.15</td>
+<td id="T_7717c_row40_col0" class="data row40 col0">0.24%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row41" class="row_heading level0 row41" data-quarto-table-cell-role="th">A.2.5</td>
+<td id="T_7717c_row41_col0" class="data row41 col0">0.24%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row42" class="row_heading level0 row42" data-quarto-table-cell-role="th">B.1.1.10</td>
+<td id="T_7717c_row42_col0" class="data row42 col0">0.18%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row43" class="row_heading level0 row43" data-quarto-table-cell-role="th">B.1.617.2</td>
+<td id="T_7717c_row43_col0" class="data row43 col0">0.18%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row44" class="row_heading level0 row44" data-quarto-table-cell-role="th">Ay.20</td>
+<td id="T_7717c_row44_col0" class="data row44 col0">0.18%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row45" class="row_heading level0 row45" data-quarto-table-cell-role="th">Ba.2.3</td>
+<td id="T_7717c_row45_col0" class="data row45 col0">0.18%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row46" class="row_heading level0 row46" data-quarto-table-cell-role="th">B.1.313</td>
+<td id="T_7717c_row46_col0" class="data row46 col0">0.18%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row47" class="row_heading level0 row47" data-quarto-table-cell-role="th">B.1.1.28</td>
+<td id="T_7717c_row47_col0" class="data row47 col0">0.18%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row48" class="row_heading level0 row48" data-quarto-table-cell-role="th">Ba.1.16</td>
+<td id="T_7717c_row48_col0" class="data row48 col0">0.12%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row49" class="row_heading level0 row49" data-quarto-table-cell-role="th">A</td>
+<td id="T_7717c_row49_col0" class="data row49 col0">0.12%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row50" class="row_heading level0 row50" data-quarto-table-cell-role="th">Ay.4.2.3</td>
+<td id="T_7717c_row50_col0" class="data row50 col0">0.12%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row51" class="row_heading level0 row51" data-quarto-table-cell-role="th">Ay.99.2</td>
+<td id="T_7717c_row51_col0" class="data row51 col0">0.12%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row52" class="row_heading level0 row52" data-quarto-table-cell-role="th">Ay.112</td>
+<td id="T_7717c_row52_col0" class="data row52 col0">0.12%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row53" class="row_heading level0 row53" data-quarto-table-cell-role="th">Ay.117</td>
+<td id="T_7717c_row53_col0" class="data row53 col0">0.12%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row54" class="row_heading level0 row54" data-quarto-table-cell-role="th">Ay.122.4</td>
+<td id="T_7717c_row54_col0" class="data row54 col0">0.12%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row55" class="row_heading level0 row55" data-quarto-table-cell-role="th">Ay.3</td>
+<td id="T_7717c_row55_col0" class="data row55 col0">0.12%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row56" class="row_heading level0 row56" data-quarto-table-cell-role="th">B.1.14</td>
+<td id="T_7717c_row56_col0" class="data row56 col0">0.12%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row57" class="row_heading level0 row57" data-quarto-table-cell-role="th">Ay.5</td>
+<td id="T_7717c_row57_col0" class="data row57 col0">0.12%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row58" class="row_heading level0 row58" data-quarto-table-cell-role="th">Ba.1.1.8</td>
+<td id="T_7717c_row58_col0" class="data row58 col0">0.12%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row59" class="row_heading level0 row59" data-quarto-table-cell-role="th">B.1.1.231</td>
+<td id="T_7717c_row59_col0" class="data row59 col0">0.12%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row60" class="row_heading level0 row60" data-quarto-table-cell-role="th">Ba.3</td>
+<td id="T_7717c_row60_col0" class="data row60 col0">0.12%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row61" class="row_heading level0 row61" data-quarto-table-cell-role="th">B.1.1.372</td>
+<td id="T_7717c_row61_col0" class="data row61 col0">0.12%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row62" class="row_heading level0 row62" data-quarto-table-cell-role="th">B.1.1.411</td>
+<td id="T_7717c_row62_col0" class="data row62 col0">0.12%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row63" class="row_heading level0 row63" data-quarto-table-cell-role="th">Ba.4</td>
+<td id="T_7717c_row63_col0" class="data row63 col0">0.06%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row64" class="row_heading level0 row64" data-quarto-table-cell-role="th">C.9</td>
+<td id="T_7717c_row64_col0" class="data row64 col0">0.06%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row65" class="row_heading level0 row65" data-quarto-table-cell-role="th">P.1.12</td>
+<td id="T_7717c_row65_col0" class="data row65 col0">0.06%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row66" class="row_heading level0 row66" data-quarto-table-cell-role="th">Ba.1.15.2</td>
+<td id="T_7717c_row66_col0" class="data row66 col0">0.06%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row67" class="row_heading level0 row67" data-quarto-table-cell-role="th">Ba.1.9</td>
+<td id="T_7717c_row67_col0" class="data row67 col0">0.06%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row68" class="row_heading level0 row68" data-quarto-table-cell-role="th">Q.8</td>
+<td id="T_7717c_row68_col0" class="data row68 col0">0.06%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row69" class="row_heading level0 row69" data-quarto-table-cell-role="th">Ba.2.5</td>
+<td id="T_7717c_row69_col0" class="data row69 col0">0.06%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row70" class="row_heading level0 row70" data-quarto-table-cell-role="th">B.1.371</td>
+<td id="T_7717c_row70_col0" class="data row70 col0">0.06%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row71" class="row_heading level0 row71" data-quarto-table-cell-role="th">Ba.1.1.14</td>
+<td id="T_7717c_row71_col0" class="data row71 col0">0.06%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row72" class="row_heading level0 row72" data-quarto-table-cell-role="th">B.1.111</td>
+<td id="T_7717c_row72_col0" class="data row72 col0">0.06%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row73" class="row_heading level0 row73" data-quarto-table-cell-role="th">A.2</td>
+<td id="T_7717c_row73_col0" class="data row73 col0">0.06%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row74" class="row_heading level0 row74" data-quarto-table-cell-role="th">Ay.101</td>
+<td id="T_7717c_row74_col0" class="data row74 col0">0.06%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row75" class="row_heading level0 row75" data-quarto-table-cell-role="th">Ay.113</td>
+<td id="T_7717c_row75_col0" class="data row75 col0">0.06%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row76" class="row_heading level0 row76" data-quarto-table-cell-role="th">Ay.124</td>
+<td id="T_7717c_row76_col0" class="data row76 col0">0.06%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row77" class="row_heading level0 row77" data-quarto-table-cell-role="th">Ay.34.1</td>
+<td id="T_7717c_row77_col0" class="data row77 col0">0.06%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row78" class="row_heading level0 row78" data-quarto-table-cell-role="th">Ay.4</td>
+<td id="T_7717c_row78_col0" class="data row78 col0">0.06%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row79" class="row_heading level0 row79" data-quarto-table-cell-role="th">Ay.53</td>
+<td id="T_7717c_row79_col0" class="data row79 col0">0.06%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row80" class="row_heading level0 row80" data-quarto-table-cell-role="th">B.1.1.194</td>
+<td id="T_7717c_row80_col0" class="data row80 col0">0.06%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row81" class="row_heading level0 row81" data-quarto-table-cell-role="th">B.1.1.198</td>
+<td id="T_7717c_row81_col0" class="data row81 col0">0.06%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row82" class="row_heading level0 row82" data-quarto-table-cell-role="th">B.1.1.354</td>
+<td id="T_7717c_row82_col0" class="data row82 col0">0.06%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row83" class="row_heading level0 row83" data-quarto-table-cell-role="th">B.1.225</td>
+<td id="T_7717c_row83_col0" class="data row83 col0">0.06%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row84" class="row_heading level0 row84" data-quarto-table-cell-role="th">Ba.1.1.13</td>
+<td id="T_7717c_row84_col0" class="data row84 col0">0.06%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row85" class="row_heading level0 row85" data-quarto-table-cell-role="th">B.1.308</td>
+<td id="T_7717c_row85_col0" class="data row85 col0">0.06%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row86" class="row_heading level0 row86" data-quarto-table-cell-role="th">A.1</td>
+<td id="T_7717c_row86_col0" class="data row86 col0">0.06%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row87" class="row_heading level0 row87" data-quarto-table-cell-role="th">B.1.427</td>
+<td id="T_7717c_row87_col0" class="data row87 col0">0.06%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row88" class="row_heading level0 row88" data-quarto-table-cell-role="th">B.1.566</td>
+<td id="T_7717c_row88_col0" class="data row88 col0">0.06%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row89" class="row_heading level0 row89" data-quarto-table-cell-role="th">B.1.596</td>
+<td id="T_7717c_row89_col0" class="data row89 col0">0.06%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row90" class="row_heading level0 row90" data-quarto-table-cell-role="th">B.1.6</td>
+<td id="T_7717c_row90_col0" class="data row90 col0">0.06%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row91" class="row_heading level0 row91" data-quarto-table-cell-role="th">B.1.621.2</td>
+<td id="T_7717c_row91_col0" class="data row91 col0">0.06%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row92" class="row_heading level0 row92" data-quarto-table-cell-role="th">B.1.636</td>
+<td id="T_7717c_row92_col0" class="data row92 col0">0.06%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row93" class="row_heading level0 row93" data-quarto-table-cell-role="th">B.1.9</td>
+<td id="T_7717c_row93_col0" class="data row93 col0">0.06%</td>
+</tr>
+<tr class="odd">
+<td id="T_7717c_level0_row94" class="row_heading level0 row94" data-quarto-table-cell-role="th">B.55</td>
+<td id="T_7717c_row94_col0" class="data row94 col0">0.06%</td>
+</tr>
+<tr class="even">
+<td id="T_7717c_level0_row95" class="row_heading level0 row95" data-quarto-table-cell-role="th">Xb</td>
+<td id="T_7717c_row95_col0" class="data row95 col0">0.06%</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<section id="exploring-infection-waves" class="level3">
+<h3 class="anchored" data-anchor-id="exploring-infection-waves">Exploring Infection Waves</h3>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>cas_ <span class="op">=</span> <span class="op">\</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>(cas_</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a> .assign(created_at<span class="op">=</span>pd.to_datetime(cas_.created_at, dayfirst<span class="op">=</span><span class="va">True</span>))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a> .set_index(<span class="st">'created_at'</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>cas_</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="25">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">muestras</th>
+<th data-quarto-table-cell-role="th">muestras_pcr</th>
+<th data-quarto-table-cell-role="th">positivas_total</th>
+<th data-quarto-table-cell-role="th">positivas_probables</th>
+<th data-quarto-table-cell-role="th">muestras_pcr_nuevas</th>
+<th data-quarto-table-cell-role="th">pruebas_rezagadas</th>
+<th data-quarto-table-cell-role="th">muertes_confirmadas</th>
+<th data-quarto-table-cell-role="th">muertes_probables</th>
+<th data-quarto-table-cell-role="th">muertes</th>
+<th data-quarto-table-cell-role="th">muertes_nuevas</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">rpc_hospitalizacion_camas_asignadas</th>
+<th data-quarto-table-cell-role="th">rpc_hospitalizacion_camas_ocupadas</th>
+<th data-quarto-table-cell-role="th">rpc_cuidado_intermedio_camas_porcentaje_ocupadas</th>
+<th data-quarto-table-cell-role="th">rpc_cuidado_intermedio_lista_espera</th>
+<th data-quarto-table-cell-role="th">rpc_cuidado_intermedio_camas_asignadas</th>
+<th data-quarto-table-cell-role="th">rpc_cuidado_intermedio_camas_ocupadas</th>
+<th data-quarto-table-cell-role="th">rpc_uci_camas_porcentaje_ocupadas</th>
+<th data-quarto-table-cell-role="th">rpc_uci_lista_espera</th>
+<th data-quarto-table-cell-role="th">rpc_uci_camas_asignadas</th>
+<th data-quarto-table-cell-role="th">rpc_uci_camas_ocupadas</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">created_at</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2020-03-13</td>
+<td>129</td>
+<td>129</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>106</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2020-03-14</td>
+<td>206</td>
+<td>206</td>
+<td>0</td>
+<td>0</td>
+<td>77</td>
+<td>178</td>
+<td>2</td>
+<td>0</td>
+<td>2</td>
+<td>1</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2020-03-15</td>
+<td>273</td>
+<td>273</td>
+<td>0</td>
+<td>0</td>
+<td>67</td>
+<td>236</td>
+<td>2</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2020-03-16</td>
+<td>354</td>
+<td>354</td>
+<td>0</td>
+<td>0</td>
+<td>81</td>
+<td>296</td>
+<td>2</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2020-03-17</td>
+<td>762</td>
+<td>762</td>
+<td>0</td>
+<td>0</td>
+<td>408</td>
+<td>651</td>
+<td>2</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2022-09-08</td>
+<td>3385114</td>
+<td>3364542</td>
+<td>1245482</td>
+<td>247280</td>
+<td>1069</td>
+<td>247280</td>
+<td>25543</td>
+<td>10333</td>
+<td>35876</td>
+<td>0</td>
+<td>...</td>
+<td>127</td>
+<td>24</td>
+<td>0</td>
+<td>0</td>
+<td>8</td>
+<td>0</td>
+<td>13</td>
+<td>0</td>
+<td>69</td>
+<td>9</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2022-09-09</td>
+<td>3390289</td>
+<td>3369717</td>
+<td>1246434</td>
+<td>247294</td>
+<td>5175</td>
+<td>247294</td>
+<td>25545</td>
+<td>10333</td>
+<td>35878</td>
+<td>2</td>
+<td>...</td>
+<td>127</td>
+<td>22</td>
+<td>0</td>
+<td>0</td>
+<td>8</td>
+<td>0</td>
+<td>13</td>
+<td>0</td>
+<td>69</td>
+<td>9</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2022-09-10</td>
+<td>3392674</td>
+<td>3372102</td>
+<td>1246891</td>
+<td>247305</td>
+<td>2385</td>
+<td>247305</td>
+<td>25550</td>
+<td>10333</td>
+<td>35883</td>
+<td>5</td>
+<td>...</td>
+<td>127</td>
+<td>22</td>
+<td>0</td>
+<td>0</td>
+<td>8</td>
+<td>0</td>
+<td>13</td>
+<td>0</td>
+<td>69</td>
+<td>9</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2022-09-11</td>
+<td>3393354</td>
+<td>3372782</td>
+<td>1247031</td>
+<td>247306</td>
+<td>680</td>
+<td>247306</td>
+<td>25551</td>
+<td>10333</td>
+<td>35884</td>
+<td>1</td>
+<td>...</td>
+<td>127</td>
+<td>22</td>
+<td>0</td>
+<td>0</td>
+<td>8</td>
+<td>0</td>
+<td>13</td>
+<td>0</td>
+<td>69</td>
+<td>9</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2022-09-12</td>
+<td>3393763</td>
+<td>3373191</td>
+<td>1247146</td>
+<td>247309</td>
+<td>409</td>
+<td>247309</td>
+<td>25551</td>
+<td>10333</td>
+<td>35884</td>
+<td>0</td>
+<td>...</td>
+<td>126</td>
+<td>19</td>
+<td>0</td>
+<td>0</td>
+<td>8</td>
+<td>0</td>
+<td>13</td>
+<td>0</td>
+<td>69</td>
+<td>9</td>
+</tr>
+</tbody>
+</table>
+
+<p>914 rows × 75 columns</p>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> remove_nonpositive(df):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df[df.ge(<span class="dv">0</span>)]</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>ticks_ <span class="op">=</span> pd.date_range(start <span class="op">=</span> <span class="st">'2020/03/13'</span>, end <span class="op">=</span> <span class="st">'2022/09/12'</span>, freq <span class="op">=</span> <span class="st">'q'</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>axes <span class="op">=</span> <span class="op">\</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>(cas_</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a> [[<span class="st">'muertes_nuevas'</span>, <span class="st">'positivas_pcr_nuevas'</span>]]</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a> .pipe(remove_nonpositive)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a> .resample(<span class="st">'2w'</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a> .<span class="bu">sum</span>()</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a> .plot(</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>     subplots<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>     figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>),</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>     xlabel<span class="op">=</span><span class="st">''</span>,</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>     xticks<span class="op">=</span>ticks_</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a> )</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, label <span class="kw">in</span> <span class="bu">zip</span>(axes, [<span class="st">'Nuevas Muertes'</span>, <span class="st">'Nuevos Positivos'</span>]):</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    ax.set_xticklabels(ticks_.<span class="bu">format</span>(date_format<span class="op">=</span><span class="st">'%Y/%m'</span>))</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    ax.grid(<span class="va">False</span>)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    ax.legend([label])</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> spine <span class="kw">in</span> [<span class="st">'top'</span>, <span class="st">'right'</span>]:</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>        ax.spines[spine].set_visible(<span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="DBExplor_files/figure-html/cell-8-output-1.svg" class="img-fluid"></p>
+</div>
+</div>
+<p>The first wave appears to have taken place during April and May of 2020. From the graph, it seems to have been particularly deadly as it presents the second highest peak in deaths without a parallel rise in positive cases. It may be due to the fact that not testing was not widespread. The second wave may be place in the first quarter of 2021. In either July or August the number of deaths increases to a suspicous high. Finally, around the first quarter of 2022 there is a new high in cases. After that point cases present another peak but without impacting the death toll.</p>
+</section>
+<section id="exploring-the-lineages-that-caused-the-waves" class="level3">
+<h3 class="anchored" data-anchor-id="exploring-the-lineages-that-caused-the-waves">Exploring the lineages that caused the waves</h3>
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>(df</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a> .loc[<span class="st">'2020/03'</span>:<span class="st">'2020/06'</span>]</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a> .groupby([<span class="st">'linaje'</span>])</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a> .agg({<span class="st">'linaje'</span>:<span class="st">'count'</span>})</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a> .rename(columns<span class="op">=</span>{<span class="st">'linaje'</span>:<span class="st">'Rel. Perc'</span>})</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a> .<span class="bu">apply</span>(<span class="kw">lambda</span> s: s <span class="op">/</span> s.<span class="bu">sum</span>())</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a> .sort_values(by<span class="op">=</span><span class="st">'Rel. Perc'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a> .style</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a> .background_gradient(axis<span class="op">=</span><span class="va">None</span>, vmin<span class="op">=</span><span class="dv">0</span>, vmax<span class="op">=</span><span class="fl">0.20</span>, cmap<span class="op">=</span><span class="st">'inferno'</span>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a> .<span class="bu">format</span>(<span class="st">'</span><span class="sc">{:.4f}</span><span class="st">'</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>C:\Users\Elias\AppData\Local\Temp\ipykernel_17956\725810497.py:1: FutureWarning: Value based partial slicing on non-monotonic DatetimeIndexes with non-existing keys is deprecated and will raise a KeyError in a future Version.
+  (df</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<style type="text/css">
+#T_9dfd1_row0_col0 {
+  background-color: #fcffa4;
+  color: #000000;
+}
+#T_9dfd1_row1_col0 {
+  background-color: #fac228;
+  color: #000000;
+}
+#T_9dfd1_row2_col0 {
+  background-color: #f57d15;
+  color: #f1f1f1;
+}
+#T_9dfd1_row3_col0 {
+  background-color: #65156e;
+  color: #f1f1f1;
+}
+#T_9dfd1_row4_col0, #T_9dfd1_row5_col0, #T_9dfd1_row6_col0, #T_9dfd1_row7_col0, #T_9dfd1_row8_col0, #T_9dfd1_row9_col0 {
+  background-color: #280b53;
+  color: #f1f1f1;
+}
+</style>
+
+<table id="T_9dfd1_" data-quarto-postprocess="true" class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th class="blank level0" data-quarto-table-cell-role="th">&nbsp;</th>
+<th class="col_heading level0 col0" data-quarto-table-cell-role="th">Rel. Perc</th>
+</tr>
+<tr class="odd">
+<th class="index_name level0" data-quarto-table-cell-role="th">linaje</th>
+<th class="blank col0" data-quarto-table-cell-role="th">&nbsp;</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td id="T_9dfd1_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">B.1.1</td>
+<td id="T_9dfd1_row0_col0" class="data row0 col0">0.4571</td>
+</tr>
+<tr class="even">
+<td id="T_9dfd1_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">B.1</td>
+<td id="T_9dfd1_row1_col0" class="data row1 col0">0.1714</td>
+</tr>
+<tr class="odd">
+<td id="T_9dfd1_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">B.1.67</td>
+<td id="T_9dfd1_row2_col0" class="data row2 col0">0.1429</td>
+</tr>
+<tr class="even">
+<td id="T_9dfd1_level0_row3" class="row_heading level0 row3" data-quarto-table-cell-role="th">B.1.14</td>
+<td id="T_9dfd1_row3_col0" class="data row3 col0">0.0571</td>
+</tr>
+<tr class="odd">
+<td id="T_9dfd1_level0_row4" class="row_heading level0 row4" data-quarto-table-cell-role="th">B.1.1.1</td>
+<td id="T_9dfd1_row4_col0" class="data row4 col0">0.0286</td>
+</tr>
+<tr class="even">
+<td id="T_9dfd1_level0_row5" class="row_heading level0 row5" data-quarto-table-cell-role="th">B.1.1.10</td>
+<td id="T_9dfd1_row5_col0" class="data row5 col0">0.0286</td>
+</tr>
+<tr class="odd">
+<td id="T_9dfd1_level0_row6" class="row_heading level0 row6" data-quarto-table-cell-role="th">B.1.225</td>
+<td id="T_9dfd1_row6_col0" class="data row6 col0">0.0286</td>
+</tr>
+<tr class="even">
+<td id="T_9dfd1_level0_row7" class="row_heading level0 row7" data-quarto-table-cell-role="th">B.1.371</td>
+<td id="T_9dfd1_row7_col0" class="data row7 col0">0.0286</td>
+</tr>
+<tr class="odd">
+<td id="T_9dfd1_level0_row8" class="row_heading level0 row8" data-quarto-table-cell-role="th">B.1.9</td>
+<td id="T_9dfd1_row8_col0" class="data row8 col0">0.0286</td>
+</tr>
+<tr class="even">
+<td id="T_9dfd1_level0_row9" class="row_heading level0 row9" data-quarto-table-cell-role="th">B.55</td>
+<td id="T_9dfd1_row9_col0" class="data row9 col0">0.0286</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell" data-execution_count="42">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>(df</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a> .loc[<span class="st">'2021/01'</span>:<span class="st">'2021/04'</span>]</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a> .groupby([<span class="st">'linaje'</span>])</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a> .agg({<span class="st">'linaje'</span>:<span class="st">'count'</span>})</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a> .rename(columns<span class="op">=</span>{<span class="st">'linaje'</span>:<span class="st">'Rel. Perc'</span>})</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a> .<span class="bu">apply</span>(<span class="kw">lambda</span> s: s <span class="op">/</span> s.<span class="bu">sum</span>())</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a> .sort_values(by<span class="op">=</span><span class="st">'Rel. Perc'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a> .style</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a> .set_caption(<span class="st">'Segunda Ola</span><span class="ch">\t</span><span class="st">(Mar-Jun 2020)'</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a> .background_gradient(axis<span class="op">=</span><span class="va">None</span>, vmin<span class="op">=</span><span class="dv">0</span>, vmax<span class="op">=</span><span class="fl">0.22</span>, cmap<span class="op">=</span><span class="st">'inferno'</span>)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a> .<span class="bu">format</span>(<span class="st">'</span><span class="sc">{:.4f}</span><span class="st">'</span>)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a> <span class="co"># .to_html() # Save html code to include in custom webpage</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="42">
+<style type="text/css">
+#T_53c20_row0_col0 {
+  background-color: #fcffa4;
+  color: #000000;
+}
+#T_53c20_row1_col0 {
+  background-color: #fb9d07;
+  color: #000000;
+}
+#T_53c20_row2_col0 {
+  background-color: #dd513a;
+  color: #f1f1f1;
+}
+#T_53c20_row3_col0 {
+  background-color: #71196e;
+  color: #f1f1f1;
+}
+#T_53c20_row4_col0, #T_53c20_row5_col0 {
+  background-color: #65156e;
+  color: #f1f1f1;
+}
+#T_53c20_row6_col0 {
+  background-color: #5a116e;
+  color: #f1f1f1;
+}
+#T_53c20_row7_col0, #T_53c20_row8_col0 {
+  background-color: #450a69;
+  color: #f1f1f1;
+}
+#T_53c20_row9_col0 {
+  background-color: #10092d;
+  color: #f1f1f1;
+}
+#T_53c20_row10_col0, #T_53c20_row11_col0 {
+  background-color: #08051d;
+  color: #f1f1f1;
+}
+#T_53c20_row12_col0, #T_53c20_row13_col0, #T_53c20_row14_col0, #T_53c20_row15_col0, #T_53c20_row16_col0, #T_53c20_row17_col0, #T_53c20_row18_col0, #T_53c20_row19_col0, #T_53c20_row20_col0, #T_53c20_row21_col0, #T_53c20_row22_col0, #T_53c20_row23_col0, #T_53c20_row24_col0, #T_53c20_row25_col0, #T_53c20_row26_col0 {
+  background-color: #02020e;
+  color: #f1f1f1;
+}
+</style>
+
+<table id="T_53c20_" data-quarto-postprocess="true" class="table table-sm table-striped small">
+<caption>Segunda Ola (Mar-Jun 2020)</caption>
+<thead>
+<tr class="header">
+<th class="blank level0" data-quarto-table-cell-role="th">&nbsp;</th>
+<th class="col_heading level0 col0" data-quarto-table-cell-role="th">Rel. Perc</th>
+</tr>
+<tr class="odd">
+<th class="index_name level0" data-quarto-table-cell-role="th">linaje</th>
+<th class="blank col0" data-quarto-table-cell-role="th">&nbsp;</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td id="T_53c20_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">B.1.1.7</td>
+<td id="T_53c20_row0_col0" class="data row0 col0">0.2241</td>
+</tr>
+<tr class="even">
+<td id="T_53c20_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">B.1.1</td>
+<td id="T_53c20_row1_col0" class="data row1 col0">0.1724</td>
+</tr>
+<tr class="odd">
+<td id="T_53c20_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">B.1.526</td>
+<td id="T_53c20_row2_col0" class="data row2 col0">0.1322</td>
+</tr>
+<tr class="even">
+<td id="T_53c20_level0_row3" class="row_heading level0 row3" data-quarto-table-cell-role="th">B</td>
+<td id="T_53c20_row3_col0" class="data row3 col0">0.0690</td>
+</tr>
+<tr class="odd">
+<td id="T_53c20_level0_row4" class="row_heading level0 row4" data-quarto-table-cell-role="th">B.1</td>
+<td id="T_53c20_row4_col0" class="data row4 col0">0.0632</td>
+</tr>
+<tr class="even">
+<td id="T_53c20_level0_row5" class="row_heading level0 row5" data-quarto-table-cell-role="th">P.1</td>
+<td id="T_53c20_row5_col0" class="data row5 col0">0.0632</td>
+</tr>
+<tr class="odd">
+<td id="T_53c20_level0_row6" class="row_heading level0 row6" data-quarto-table-cell-role="th">C.37</td>
+<td id="T_53c20_row6_col0" class="data row6 col0">0.0575</td>
+</tr>
+<tr class="even">
+<td id="T_53c20_level0_row7" class="row_heading level0 row7" data-quarto-table-cell-role="th">B.1.1.348</td>
+<td id="T_53c20_row7_col0" class="data row7 col0">0.0460</td>
+</tr>
+<tr class="odd">
+<td id="T_53c20_level0_row8" class="row_heading level0 row8" data-quarto-table-cell-role="th">B.1.1.1</td>
+<td id="T_53c20_row8_col0" class="data row8 col0">0.0460</td>
+</tr>
+<tr class="even">
+<td id="T_53c20_level0_row9" class="row_heading level0 row9" data-quarto-table-cell-role="th">A.2.5.3</td>
+<td id="T_53c20_row9_col0" class="data row9 col0">0.0172</td>
+</tr>
+<tr class="odd">
+<td id="T_53c20_level0_row10" class="row_heading level0 row10" data-quarto-table-cell-role="th">A.2.5</td>
+<td id="T_53c20_row10_col0" class="data row10 col0">0.0115</td>
+</tr>
+<tr class="even">
+<td id="T_53c20_level0_row11" class="row_heading level0 row11" data-quarto-table-cell-role="th">B.1.1.411</td>
+<td id="T_53c20_row11_col0" class="data row11 col0">0.0115</td>
+</tr>
+<tr class="odd">
+<td id="T_53c20_level0_row12" class="row_heading level0 row12" data-quarto-table-cell-role="th">C.9</td>
+<td id="T_53c20_row12_col0" class="data row12 col0">0.0057</td>
+</tr>
+<tr class="even">
+<td id="T_53c20_level0_row13" class="row_heading level0 row13" data-quarto-table-cell-role="th">Ba.1.15</td>
+<td id="T_53c20_row13_col0" class="data row13 col0">0.0057</td>
+</tr>
+<tr class="odd">
+<td id="T_53c20_level0_row14" class="row_heading level0 row14" data-quarto-table-cell-role="th">P.1.15</td>
+<td id="T_53c20_row14_col0" class="data row14 col0">0.0057</td>
+</tr>
+<tr class="even">
+<td id="T_53c20_level0_row15" class="row_heading level0 row15" data-quarto-table-cell-role="th">C.37.1</td>
+<td id="T_53c20_row15_col0" class="data row15 col0">0.0057</td>
+</tr>
+<tr class="odd">
+<td id="T_53c20_level0_row16" class="row_heading level0 row16" data-quarto-table-cell-role="th">Q.8</td>
+<td id="T_53c20_row16_col0" class="data row16 col0">0.0057</td>
+</tr>
+<tr class="even">
+<td id="T_53c20_level0_row17" class="row_heading level0 row17" data-quarto-table-cell-role="th">P.1.12</td>
+<td id="T_53c20_row17_col0" class="data row17 col0">0.0057</td>
+</tr>
+<tr class="odd">
+<td id="T_53c20_level0_row18" class="row_heading level0 row18" data-quarto-table-cell-role="th">A.2</td>
+<td id="T_53c20_row18_col0" class="data row18 col0">0.0057</td>
+</tr>
+<tr class="even">
+<td id="T_53c20_level0_row19" class="row_heading level0 row19" data-quarto-table-cell-role="th">Ba.1.14</td>
+<td id="T_53c20_row19_col0" class="data row19 col0">0.0057</td>
+</tr>
+<tr class="odd">
+<td id="T_53c20_level0_row20" class="row_heading level0 row20" data-quarto-table-cell-role="th">B.1.111</td>
+<td id="T_53c20_row20_col0" class="data row20 col0">0.0057</td>
+</tr>
+<tr class="even">
+<td id="T_53c20_level0_row21" class="row_heading level0 row21" data-quarto-table-cell-role="th">B.1.1.354</td>
+<td id="T_53c20_row21_col0" class="data row21 col0">0.0057</td>
+</tr>
+<tr class="odd">
+<td id="T_53c20_level0_row22" class="row_heading level0 row22" data-quarto-table-cell-role="th">B.1.1.231</td>
+<td id="T_53c20_row22_col0" class="data row22 col0">0.0057</td>
+</tr>
+<tr class="even">
+<td id="T_53c20_level0_row23" class="row_heading level0 row23" data-quarto-table-cell-role="th">B.1.1.198</td>
+<td id="T_53c20_row23_col0" class="data row23 col0">0.0057</td>
+</tr>
+<tr class="odd">
+<td id="T_53c20_level0_row24" class="row_heading level0 row24" data-quarto-table-cell-role="th">B.1.1.194</td>
+<td id="T_53c20_row24_col0" class="data row24 col0">0.0057</td>
+</tr>
+<tr class="even">
+<td id="T_53c20_level0_row25" class="row_heading level0 row25" data-quarto-table-cell-role="th">Ay.100</td>
+<td id="T_53c20_row25_col0" class="data row25 col0">0.0057</td>
+</tr>
+<tr class="odd">
+<td id="T_53c20_level0_row26" class="row_heading level0 row26" data-quarto-table-cell-role="th">Unassigned</td>
+<td id="T_53c20_row26_col0" class="data row26 col0">0.0057</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>(df</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a> .loc[<span class="st">'2021/12'</span>:<span class="st">'2022/03'</span>]</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a> .groupby([<span class="st">'linaje'</span>])</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a> .agg({<span class="st">'linaje'</span>:<span class="st">'count'</span>})</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a> .rename(columns<span class="op">=</span>{<span class="st">'linaje'</span>:<span class="st">'Rel. Perc'</span>})</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a> .<span class="bu">apply</span>(<span class="kw">lambda</span> s: s <span class="op">/</span> s.<span class="bu">sum</span>())</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a> .sort_values(by<span class="op">=</span><span class="st">'Rel. Perc'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a> .style</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a> .set_caption(<span class="st">'Tercera Ola</span><span class="ch">\t</span><span class="st">(Mar-Jun 2020)'</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a> .background_gradient(axis<span class="op">=</span><span class="va">None</span>, vmin<span class="op">=</span><span class="dv">0</span>, vmax<span class="op">=</span><span class="fl">0.43</span>, cmap<span class="op">=</span><span class="st">'inferno'</span>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a> .<span class="bu">format</span>(<span class="st">'</span><span class="sc">{:.4f}</span><span class="st">'</span>)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="36">
+<style type="text/css">
+#T_2da87_row0_col0 {
+  background-color: #f6fa96;
+  color: #000000;
+}
+#T_2da87_row1_col0 {
+  background-color: #a82e5f;
+  color: #f1f1f1;
+}
+#T_2da87_row2_col0, #T_2da87_row3_col0 {
+  background-color: #190c3e;
+  color: #f1f1f1;
+}
+#T_2da87_row4_col0 {
+  background-color: #140b34;
+  color: #f1f1f1;
+}
+#T_2da87_row5_col0 {
+  background-color: #0e092b;
+  color: #f1f1f1;
+}
+#T_2da87_row6_col0, #T_2da87_row7_col0 {
+  background-color: #0d0829;
+  color: #f1f1f1;
+}
+#T_2da87_row8_col0 {
+  background-color: #0b0724;
+  color: #f1f1f1;
+}
+#T_2da87_row9_col0 {
+  background-color: #050417;
+  color: #f1f1f1;
+}
+#T_2da87_row10_col0, #T_2da87_row11_col0 {
+  background-color: #030210;
+  color: #f1f1f1;
+}
+#T_2da87_row12_col0 {
+  background-color: #02020e;
+  color: #f1f1f1;
+}
+#T_2da87_row13_col0, #T_2da87_row14_col0 {
+  background-color: #02010a;
+  color: #f1f1f1;
+}
+#T_2da87_row15_col0, #T_2da87_row16_col0, #T_2da87_row17_col0 {
+  background-color: #010108;
+  color: #f1f1f1;
+}
+#T_2da87_row18_col0 {
+  background-color: #010106;
+  color: #f1f1f1;
+}
+#T_2da87_row19_col0, #T_2da87_row20_col0, #T_2da87_row21_col0, #T_2da87_row22_col0, #T_2da87_row23_col0, #T_2da87_row24_col0, #T_2da87_row25_col0, #T_2da87_row26_col0 {
+  background-color: #010005;
+  color: #f1f1f1;
+}
+#T_2da87_row27_col0, #T_2da87_row28_col0, #T_2da87_row29_col0, #T_2da87_row30_col0, #T_2da87_row31_col0, #T_2da87_row32_col0, #T_2da87_row33_col0, #T_2da87_row34_col0, #T_2da87_row35_col0, #T_2da87_row36_col0 {
+  background-color: #000004;
+  color: #f1f1f1;
+}
+</style>
+
+<table id="T_2da87_" data-quarto-postprocess="true" class="table table-sm table-striped small">
+<caption>Tercera Ola (Mar-Jun 2020)</caption>
+<thead>
+<tr class="header">
+<th class="blank level0" data-quarto-table-cell-role="th">&nbsp;</th>
+<th class="col_heading level0 col0" data-quarto-table-cell-role="th">Rel. Perc</th>
+</tr>
+<tr class="odd">
+<th class="index_name level0" data-quarto-table-cell-role="th">linaje</th>
+<th class="blank col0" data-quarto-table-cell-role="th">&nbsp;</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td id="T_2da87_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">Ba.1.1</td>
+<td id="T_2da87_row0_col0" class="data row0 col0">0.4221</td>
+</tr>
+<tr class="even">
+<td id="T_2da87_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">Ba.1.14</td>
+<td id="T_2da87_row1_col0" class="data row1 col0">0.1936</td>
+</tr>
+<tr class="odd">
+<td id="T_2da87_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">Ba.1</td>
+<td id="T_2da87_row2_col0" class="data row2 col0">0.0454</td>
+</tr>
+<tr class="even">
+<td id="T_2da87_level0_row3" class="row_heading level0 row3" data-quarto-table-cell-role="th">Ay.100</td>
+<td id="T_2da87_row3_col0" class="data row3 col0">0.0454</td>
+</tr>
+<tr class="odd">
+<td id="T_2da87_level0_row4" class="row_heading level0 row4" data-quarto-table-cell-role="th">Ay.122</td>
+<td id="T_2da87_row4_col0" class="data row4 col0">0.0393</td>
+</tr>
+<tr class="even">
+<td id="T_2da87_level0_row5" class="row_heading level0 row5" data-quarto-table-cell-role="th">Ba.1.15</td>
+<td id="T_2da87_row5_col0" class="data row5 col0">0.0333</td>
+</tr>
+<tr class="odd">
+<td id="T_2da87_level0_row6" class="row_heading level0 row6" data-quarto-table-cell-role="th">Ba.1.1.11</td>
+<td id="T_2da87_row6_col0" class="data row6 col0">0.0318</td>
+</tr>
+<tr class="even">
+<td id="T_2da87_level0_row7" class="row_heading level0 row7" data-quarto-table-cell-role="th">Unassigned</td>
+<td id="T_2da87_row7_col0" class="data row7 col0">0.0318</td>
+</tr>
+<tr class="odd">
+<td id="T_2da87_level0_row8" class="row_heading level0 row8" data-quarto-table-cell-role="th">Ba.1.18</td>
+<td id="T_2da87_row8_col0" class="data row8 col0">0.0272</td>
+</tr>
+<tr class="even">
+<td id="T_2da87_level0_row9" class="row_heading level0 row9" data-quarto-table-cell-role="th">Ba.1.1.1</td>
+<td id="T_2da87_row9_col0" class="data row9 col0">0.0182</td>
+</tr>
+<tr class="odd">
+<td id="T_2da87_level0_row10" class="row_heading level0 row10" data-quarto-table-cell-role="th">Ba.1.1.15</td>
+<td id="T_2da87_row10_col0" class="data row10 col0">0.0121</td>
+</tr>
+<tr class="even">
+<td id="T_2da87_level0_row11" class="row_heading level0 row11" data-quarto-table-cell-role="th">Ay.25.1</td>
+<td id="T_2da87_row11_col0" class="data row11 col0">0.0121</td>
+</tr>
+<tr class="odd">
+<td id="T_2da87_level0_row12" class="row_heading level0 row12" data-quarto-table-cell-role="th">Ba.1.1.16</td>
+<td id="T_2da87_row12_col0" class="data row12 col0">0.0106</td>
+</tr>
+<tr class="even">
+<td id="T_2da87_level0_row13" class="row_heading level0 row13" data-quarto-table-cell-role="th">Ba.1.20</td>
+<td id="T_2da87_row13_col0" class="data row13 col0">0.0076</td>
+</tr>
+<tr class="odd">
+<td id="T_2da87_level0_row14" class="row_heading level0 row14" data-quarto-table-cell-role="th">Ba.1.17</td>
+<td id="T_2da87_row14_col0" class="data row14 col0">0.0076</td>
+</tr>
+<tr class="even">
+<td id="T_2da87_level0_row15" class="row_heading level0 row15" data-quarto-table-cell-role="th">Ay.103</td>
+<td id="T_2da87_row15_col0" class="data row15 col0">0.0061</td>
+</tr>
+<tr class="odd">
+<td id="T_2da87_level0_row16" class="row_heading level0 row16" data-quarto-table-cell-role="th">B.1</td>
+<td id="T_2da87_row16_col0" class="data row16 col0">0.0061</td>
+</tr>
+<tr class="even">
+<td id="T_2da87_level0_row17" class="row_heading level0 row17" data-quarto-table-cell-role="th">Ba.1.19</td>
+<td id="T_2da87_row17_col0" class="data row17 col0">0.0061</td>
+</tr>
+<tr class="odd">
+<td id="T_2da87_level0_row18" class="row_heading level0 row18" data-quarto-table-cell-role="th">Ay.43</td>
+<td id="T_2da87_row18_col0" class="data row18 col0">0.0045</td>
+</tr>
+<tr class="even">
+<td id="T_2da87_level0_row19" class="row_heading level0 row19" data-quarto-table-cell-role="th">Ay.112</td>
+<td id="T_2da87_row19_col0" class="data row19 col0">0.0030</td>
+</tr>
+<tr class="odd">
+<td id="T_2da87_level0_row20" class="row_heading level0 row20" data-quarto-table-cell-role="th">B.1.617.2</td>
+<td id="T_2da87_row20_col0" class="data row20 col0">0.0030</td>
+</tr>
+<tr class="even">
+<td id="T_2da87_level0_row21" class="row_heading level0 row21" data-quarto-table-cell-role="th">B.1.1</td>
+<td id="T_2da87_row21_col0" class="data row21 col0">0.0030</td>
+</tr>
+<tr class="odd">
+<td id="T_2da87_level0_row22" class="row_heading level0 row22" data-quarto-table-cell-role="th">Ba.2.3</td>
+<td id="T_2da87_row22_col0" class="data row22 col0">0.0030</td>
+</tr>
+<tr class="even">
+<td id="T_2da87_level0_row23" class="row_heading level0 row23" data-quarto-table-cell-role="th">Ba.1.1.8</td>
+<td id="T_2da87_row23_col0" class="data row23 col0">0.0030</td>
+</tr>
+<tr class="odd">
+<td id="T_2da87_level0_row24" class="row_heading level0 row24" data-quarto-table-cell-role="th">Ay.44</td>
+<td id="T_2da87_row24_col0" class="data row24 col0">0.0030</td>
+</tr>
+<tr class="even">
+<td id="T_2da87_level0_row25" class="row_heading level0 row25" data-quarto-table-cell-role="th">Ay.20</td>
+<td id="T_2da87_row25_col0" class="data row25 col0">0.0030</td>
+</tr>
+<tr class="odd">
+<td id="T_2da87_level0_row26" class="row_heading level0 row26" data-quarto-table-cell-role="th">Ba.1.16</td>
+<td id="T_2da87_row26_col0" class="data row26 col0">0.0030</td>
+</tr>
+<tr class="even">
+<td id="T_2da87_level0_row27" class="row_heading level0 row27" data-quarto-table-cell-role="th">Ba.1.9</td>
+<td id="T_2da87_row27_col0" class="data row27 col0">0.0015</td>
+</tr>
+<tr class="odd">
+<td id="T_2da87_level0_row28" class="row_heading level0 row28" data-quarto-table-cell-role="th">Ba.2.5</td>
+<td id="T_2da87_row28_col0" class="data row28 col0">0.0015</td>
+</tr>
+<tr class="even">
+<td id="T_2da87_level0_row29" class="row_heading level0 row29" data-quarto-table-cell-role="th">Ba.1.1.14</td>
+<td id="T_2da87_row29_col0" class="data row29 col0">0.0015</td>
+</tr>
+<tr class="odd">
+<td id="T_2da87_level0_row30" class="row_heading level0 row30" data-quarto-table-cell-role="th">Ay.43.3</td>
+<td id="T_2da87_row30_col0" class="data row30 col0">0.0015</td>
+</tr>
+<tr class="even">
+<td id="T_2da87_level0_row31" class="row_heading level0 row31" data-quarto-table-cell-role="th">Ba.1.1.13</td>
+<td id="T_2da87_row31_col0" class="data row31 col0">0.0015</td>
+</tr>
+<tr class="odd">
+<td id="T_2da87_level0_row32" class="row_heading level0 row32" data-quarto-table-cell-role="th">Ay.101</td>
+<td id="T_2da87_row32_col0" class="data row32 col0">0.0015</td>
+</tr>
+<tr class="even">
+<td id="T_2da87_level0_row33" class="row_heading level0 row33" data-quarto-table-cell-role="th">B.1.621</td>
+<td id="T_2da87_row33_col0" class="data row33 col0">0.0015</td>
+</tr>
+<tr class="odd">
+<td id="T_2da87_level0_row34" class="row_heading level0 row34" data-quarto-table-cell-role="th">B</td>
+<td id="T_2da87_row34_col0" class="data row34 col0">0.0015</td>
+</tr>
+<tr class="even">
+<td id="T_2da87_level0_row35" class="row_heading level0 row35" data-quarto-table-cell-role="th">Ay.5</td>
+<td id="T_2da87_row35_col0" class="data row35 col0">0.0015</td>
+</tr>
+<tr class="odd">
+<td id="T_2da87_level0_row36" class="row_heading level0 row36" data-quarto-table-cell-role="th">Ay.113</td>
+<td id="T_2da87_row36_col0" class="data row36 col0">0.0015</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="anomalies" class="level3">
+<h3 class="anchored" data-anchor-id="anomalies">Anomalies</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On June 5th 2020, for the column `positivas_pcr_nuevas` </span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># there is a negative value</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>(cas_</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a> .loc[<span class="st">'2020/05/06'</span>]</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a> [<span class="st">'positivas_pcr_nuevas'</span>]</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>(cas_</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a> .loc[<span class="st">'2020/05/08'</span>]</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a> [<span class="st">'positivas_pcr_nuevas'</span>]</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
