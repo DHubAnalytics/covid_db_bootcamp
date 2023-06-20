@@ -1,0 +1,225 @@
+cod_canton	canton
+C101	Cuenca
+C102	Giron
+C103	Gualaceo
+C104	Nabon
+C105	Paute
+C106	Pucara
+C107	San Fernando
+C108	Santa Isabel
+C109	Sigsig
+C110	Ona
+C111	Chordeleg
+C112	El Pan
+C113	Sevilla de Oro
+C114	Guachapala
+C115	Camilo Ponce Enriquez
+C201	Guaranda
+C202	Chillanes
+C203	Chimbo
+C204	Echeandia
+C205	San Miguel
+C206	Caluma
+C207	Las Naves
+C301	Azogues
+C302	Biblian
+C303	Canar
+C304	La Troncal
+C305	El Tambo
+C306	Deleg
+C307	Suscal
+C401	Tulcan
+C402	Bolivar
+C403	Espejo
+C404	Mira
+C405	Montufar
+C406	San Pedro de Huaca
+C501	Latacunga
+C502	La Mana
+C503	Pangua
+C504	Pujili
+C505	Salcedo
+C506	Saquisili
+C507	Sigchos
+C601	Riobamba
+C602	Alausi
+C603	Colta
+C604	Chambo
+C605	Chunchi
+C606	Guamote
+C607	Guano
+C608	Pallatanga
+C609	Penipe
+C610	Cumanda
+C701	Machala
+C702	Arenillas
+C703	Atahualpa
+C704	Balsas
+C705	Chilla
+C706	El Guabo
+C707	Huaquillas
+C708	Marcabeli
+C709	Pasaje
+C710	Pinas
+C711	Portovelo
+C712	Santa Rosa
+C713	Zaruma
+C714	Las Lajas
+C801	Esmeraldas
+C802	Eloy Alfaro
+C803	Muisne
+C804	Quininde
+C805	San Lorenzo
+C806	Atacames
+C807	Rioverde
+C808	La Concordia
+C901	Guayaquil
+C902	Alfredo Baquerizo Moreno
+C903	Balao
+C904	Balzar
+C905	Colimes
+C906	Daule
+C907	Duran
+C908	El Empalme
+C909	El Triunfo
+C910	Milagro
+C911	Naranjal
+C912	Naranjito
+C913	Palestina
+C914	Pedro Carbo
+C916	Samborondon
+C918	Santa Lucia
+C919	Urbina Jado
+C920	Yaguachi
+C921	Playas
+C922	Simon Bolivar
+C923	Coronel Marcelino Mariduena
+C924	Lomas De Sargentillo
+C925	Nobol
+C927	General Antonio Elizalde
+C928	Isidro Ayora
+C1001	Ibarra
+C1002	Antonio Ante
+C1003	Cotacachi
+C1004	Otavalo
+C1005	Pimampiro
+C1006	San Miguel de Urcuqui
+C1101	Loja
+C1102	Calvas
+C1103	Catamayo
+C1104	Celica
+C1105	Chaguarpamba
+C1106	Espindola
+C1107	Gonzanama
+C1108	Macara
+C1109	Paltas
+C1110	Puyango
+C1111	Saraguro
+C1112	Sozoranga
+C1113	Zapotillo
+C1114	Pindal
+C1115	Quilanga
+C1116	Olmedo
+C1201	Babahoyo
+C1202	Baba
+C1203	Montalvo
+C1204	Puebloviejo
+C1205	Quevedo
+C1206	Urdaneta
+C1207	Ventanas
+C1208	Vinces
+C1209	Palenque
+C1210	Buena Fe
+C1211	Valencia
+C1212	Mocache
+C1213	Quinsaloma
+C1301	Portoviejo
+C1302	Bolivar
+C1303	Chone
+C1304	El Carmen
+C1305	Flavio Alfaro
+C1306	Jipijapa
+C1307	Junin
+C1308	Manta
+C1309	Montecristi
+C1310	Pajan
+C1311	Pichincha
+C1312	Rocafuerte
+C1313	Santa Ana
+C1314	Sucre
+C1315	Tosagua
+C1316	24 De Mayo
+C1317	Pedernales
+C1318	Olmedo
+C1319	Puerto Lopez
+C1320	Jama
+C1321	Jaramijo
+C1322	San Vicente
+C1401	Morona
+C1402	Gualaquiza
+C1403	Limon Indanza
+C1404	Palora
+C1405	Santiago
+C1406	Sucua
+C1407	Huamboya
+C1408	San Juan Bosco
+C1409	Taisha
+C1410	Logrono
+C1411	Pablo Vi
+C1412	Tiwintza
+C1501	Tena
+C1503	Archidona
+C1504	El Chaco
+C1507	Quijos
+C1509	Carlos Julio Arosemena
+C1601	Pastaza
+C1602	Mera
+C1603	Santa Clara
+C1604	Arajuno
+C1701	Quito
+C1702	Cayambe
+C1703	Mejia
+C1704	Pedro Moncayo
+C1705	Ruminahui
+C1707	San Miguel de Los Bancos
+C1708	Pedro Vicente Maldonado
+C1709	Puerto Quito
+C1801	Ambato
+C1802	Banos
+C1803	Cevallos
+C1804	Mocha
+C1805	Patate
+C1806	Quero
+C1807	San Pedro de Pelileo
+C1808	Santiago de Pillaro
+C1809	Tisaleo
+C1901	Zamora
+C1902	Chinchipe
+C1903	Nangaritza
+C1904	Yacuambi
+C1905	Yantzaza
+C1906	El Pangui
+C1907	Centinela del Condor
+C1908	Palanda
+C1909	Paquisha
+C2001	San Cristobal
+C2002	Isabela
+C2003	Santa Cruz
+C2101	Lago Agrio
+C2102	Gonzalo Pizarro
+C2103	Putumayo
+C2104	Shushufindi
+C2105	Sucumbios
+C2106	Cascales
+C2107	Cuyabeno
+C2201	Orellana
+C2202	Aguarico
+C2203	La Joya de Los Sachas
+C2204	Loreto
+C2301	Santo Domingo
+C2401	Santa Elena
+C2402	Libertad
+C2403	Salinas
+C9001	Las Golondrinas
+C9003	El Piedrero
+C9004	Manga Del Cura

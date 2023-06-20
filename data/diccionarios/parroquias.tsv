@@ -1,0 +1,1401 @@
+cod_parroquia	parroquia
+PR10101	Bellavista
+PR10102	Canaribamba
+PR10103	El Batan
+PR10104	El Sagrario
+PR10105	El Vecino
+PR10106	Gil Ramirez Davalos
+PR10107	Huaynacapac
+PR10108	Machangara
+PR10109	Monay
+PR10110	San Blas
+PR10111	San Sebastian
+PR10112	Sucre
+PR10113	Totoracocha
+PR10114	Yanuncay
+PR10115	Hermano Miguel
+PR10150	Cuenca
+PR10151	Banos
+PR10152	Cumbe
+PR10153	Chaucha
+PR10154	Checa (Jidcay)
+PR10155	Chiquintad
+PR10156	Llacao
+PR10157	Molleturo
+PR10158	Nulti
+PR10159	Octavio Cordero Palacios (Santa Rosa)
+PR10160	Paccha
+PR10161	Quingeo
+PR10162	Ricaurte
+PR10163	San Joaquin
+PR10164	Santa Ana
+PR10165	Sayausi
+PR10166	Sidcay
+PR10167	Sinincay
+PR10168	Tarqui
+PR10169	Turi
+PR10170	Valle
+PR10171	Victoria Del Portete (Irquis)
+PR10250	Giron
+PR10251	Asuncion
+PR10252	San Gerardo
+PR10350	Gualaceo
+PR10351	Chordeleg
+PR10352	Daniel Cordova Toral (El Oriente)
+PR10353	Jadan
+PR10354	Mariano Moreno
+PR10355	Principal
+PR10356	Remigio Crespo Toral (Gulag)
+PR10357	San Juan
+PR10358	Zhidmad
+PR10359	Luis Cordero Vega
+PR10360	Simon Bolivar (Cab. En Gananzol)
+PR10450	Nabon
+PR10451	Cochapata
+PR10452	El Progreso (Cab.En Zhota)
+PR10453	Las Nieves (Chaya)
+PR10454	Ona
+PR10550	Paute
+PR10551	Amaluza
+PR10552	Bulan (Jose Victor Izquierdo)
+PR10553	Chican (Guillermo Ortega)
+PR10554	El Cabo
+PR10555	Guachapala
+PR10556	Guarainag
+PR10557	Palmas
+PR10558	Pan
+PR10559	San Cristobal (Carlos Ordonez Lazo)
+PR10560	Sevilla De Oro
+PR10561	Tomebamba
+PR10562	Dug Dug
+PR10650	Pucara
+PR10651	Camilo Ponce Enriquez (Cab. En Rio 7 De Mollepongo)
+PR10652	San Rafael De Sharug
+PR10750	San Fernando
+PR10751	Chumblin
+PR10850	Santa Isabel (Chaguarurco)
+PR10851	Abdon Calderon (La Union)
+PR10852	El Carmen De Pijili
+PR10853	Zhaglli (Shaglli)
+PR10854	San Salvador De Canaribamba
+PR10950	Sigsig
+PR10951	Cuchil (Cutchil)
+PR10952	Gima
+PR10953	Guel
+PR10954	Ludo
+PR10955	San Bartolome
+PR10956	San Jose De Raranga
+PR11050	San Felipe De Ona Cabecera Cantonal
+PR11051	Susudel
+PR11150	Chordeleg
+PR11151	Principal
+PR11152	La Union
+PR11153	Luis Galarza Orellana (Cab.En Delegsol)
+PR11154	San Martin De Puzhio
+PR11250	El Pan
+PR11251	Amaluza
+PR11252	Palmas
+PR11253	San Vicente
+PR11350	Sevilla De Oro
+PR11351	Amaluza
+PR11352	Palmas
+PR11450	Guachapala
+PR11550	Camilo Ponce Enriquez
+PR11551	El Carmen De Pijili
+PR20101	Angel Polibio Chaves
+PR20102	Gabriel Ignacio Veintimilla
+PR20103	Guanujo
+PR20150	Guaranda
+PR20151	Facundo Vela
+PR20152	Guanujo
+PR20153	Julio E. Moreno (Catanahuan Grande)
+PR20154	Las Naves
+PR20155	Salinas
+PR20156	San Lorenzo
+PR20157	San Simon (Yacoto)
+PR20158	Santa Fe (Santa Fe)
+PR20159	Simiatug
+PR20160	San Luis De Pambil
+PR20250	Chillanes
+PR20251	San Jose Del Tambo (Tambopamba)
+PR20350	San Jose De Chimbo
+PR20351	Asuncion (Asancoto)
+PR20352	Caluma
+PR20353	Magdalena (Chapacoto)
+PR20354	San Sebastian
+PR20355	Telimbela
+PR20450	Echeandia
+PR20550	San Miguel
+PR20551	Balsapamba
+PR20552	Bilovan
+PR20553	Regulo De Mora
+PR20554	San Pablo (San Pablo De Atenas)
+PR20555	Santiago
+PR20556	San Vicente
+PR20650	Caluma
+PR20701	Las Mercedes
+PR20702	Las Naves
+PR20750	Las Naves
+PR30101	Aurelio Bayas Martinez
+PR30102	Azogues
+PR30103	Borrero
+PR30104	San Francisco
+PR30150	Azogues
+PR30151	Cojitambo
+PR30152	Deleg
+PR30153	Guapan
+PR30154	Javier Loyola (Chuquipata)
+PR30155	Luis Cordero
+PR30156	Pindilig
+PR30157	Rivera
+PR30158	San Miguel
+PR30159	Solano
+PR30160	Taday
+PR30250	Biblian
+PR30251	Nazon (Cab. En Pampa De Dominguez)
+PR30252	San Francisco De Sageo
+PR30253	Turupamba
+PR30254	Jerusalen
+PR30350	Canar
+PR30351	Chontamarca
+PR30352	Chorocopte
+PR30353	General Morales (Socarte)
+PR30354	Gualleturo
+PR30355	Honorato Vasquez (Tambo Viejo)
+PR30356	Ingapirca
+PR30357	Juncal
+PR30358	San Antonio
+PR30359	Suscal
+PR30360	Tambo
+PR30361	Zhud
+PR30362	Ventura
+PR30363	Ducur
+PR30450	La Troncal
+PR30451	Manuel J. Calle
+PR30452	Pancho Negro
+PR30550	El Tambo
+PR30650	Deleg
+PR30651	Solano
+PR30750	Suscal
+PR40101	Gonzalez Suarez
+PR40102	Tulcan
+PR40150	Tulcan
+PR40151	El Carmelo (El Pun)
+PR40152	Huaca
+PR40153	Julio Andrade (Orejuela)
+PR40154	Maldonado
+PR40155	Pioter
+PR40156	Tobar Donoso (La Bocana De Camumbi)
+PR40157	Tufino
+PR40158	Urbina (Taya)
+PR40159	El Chical
+PR40160	Mariscal Sucre
+PR40161	Santa Martha De Cuba
+PR40250	Bolivar
+PR40251	Garcia Moreno
+PR40252	Los Andes
+PR40253	Monte Olivo
+PR40254	San Vicente De Pusir
+PR40255	San Rafael
+PR40301	El Angel
+PR40302	27 De Septiembre
+PR40350	El Angel
+PR40351	El Goaltal
+PR40352	La Libertad (Alizo)
+PR40353	San Isidro
+PR40450	Mira (Chontahuasi)
+PR40451	Concepcion
+PR40452	Jijon Y Caamano (Cab. En Rio Blanco)
+PR40453	Juan Montalvo (San Ignacio De Quil)
+PR40501	Gonzalez Suarez
+PR40502	San Jose
+PR40550	San Gabriel
+PR40551	Cristobal Colon
+PR40552	Chitan De Navarrete
+PR40553	Fernandez Salvador
+PR40554	La Paz
+PR40555	Piartal
+PR40650	Huaca
+PR40651	Mariscal Sucre
+PR50101	Eloy Alfaro (San Felipe)
+PR50102	Ignacio Flores (Parque Flores)
+PR50103	Juan Montalvo (San Sebastian)
+PR50104	La Matriz
+PR50105	San Buenaventura
+PR50150	Latacunga
+PR50151	Alaques (Alaquez)
+PR50152	Belisario Quevedo (Guanailin)
+PR50153	Guaitacama (Guaytacama)
+PR50154	Joseguango Bajo
+PR50155	Las Pampas
+PR50156	Mulalo
+PR50157	11 De Noviembre (Ilinchisi)
+PR50158	Poalo
+PR50159	San Juan De Pastocalle
+PR50160	Sigchos
+PR50161	Tanicuchi
+PR50162	Toacaso
+PR50163	Palo Quemado
+PR50201	El Carmen
+PR50202	La Mana
+PR50203	El Triunfo
+PR50250	La Mana
+PR50251	Guasaganda (Cab.En Guasaganda
+PR50252	Pucayacu
+PR50350	El Corazon
+PR50351	Moraspungo
+PR50352	Pinllopata
+PR50353	Ramon Campana
+PR50450	Pujili
+PR50451	Angamarca
+PR50452	Chucchilan (Chugchilan)
+PR50453	Guangaje
+PR50454	Isinlibi (Isinlivi)
+PR50455	La Victoria
+PR50456	Pilalo
+PR50457	Tingo
+PR50458	Zumbahua
+PR50550	San Miguel
+PR50551	Antonio Jose Holguin (Santa Lucia)
+PR50552	Cusubamba
+PR50553	Mulalillo
+PR50554	Mulliquindil (Santa Ana)
+PR50555	Pansaleo
+PR50650	Saquisili
+PR50651	Canchagua
+PR50652	Chantilin
+PR50653	Cochapamba
+PR50750	Sigchos
+PR50751	Chugchillan
+PR50752	Isinlivi
+PR50753	Las Pampas
+PR50754	Palo Quemado
+PR60101	Lizarzaburu
+PR60102	Maldonado
+PR60103	Velasco
+PR60104	Veloz
+PR60105	Yaruquies
+PR60150	Riobamba
+PR60151	Cacha (Cab. En Machangara)
+PR60152	Calpi
+PR60153	Cubijies
+PR60154	Flores
+PR60155	Lican
+PR60156	Licto
+PR60157	Pungala
+PR60158	Punin
+PR60159	Quimiag
+PR60160	San Juan
+PR60161	San Luis
+PR60250	Alausi
+PR60251	Achupallas
+PR60252	Cumanda
+PR60253	Guasuntos
+PR60254	Huigra
+PR60255	Multitud
+PR60256	Pistishi (Nariz Del Diablo)
+PR60257	Pumallacta
+PR60258	Sevilla
+PR60259	Sibambe
+PR60260	Tixan
+PR60301	Cajabamba
+PR60302	Sicalpa
+PR60350	Villa La Union (Cajabamba)
+PR60351	Cani
+PR60352	Columbe
+PR60353	Juan De Velasco (Pangor)
+PR60354	Santiago De Quito (Cab. En San Antonio De Quito)
+PR60450	Chambo
+PR60550	Chunchi
+PR60551	Capzol
+PR60552	Compud
+PR60553	Gonzol
+PR60554	Llagos
+PR60650	Guamote
+PR60651	Cebadas
+PR60652	Palmira
+PR60701	El Rosario
+PR60702	La Matriz
+PR60750	Guano
+PR60751	Guanando
+PR60752	Ilapo
+PR60753	La Providencia
+PR60754	San Andres
+PR60755	San Gerardo De Pacaicaguan
+PR60756	San Isidro De Patulu
+PR60757	San Jose Del Chazo
+PR60758	Santa Fe De Galan
+PR60759	Valparaiso
+PR60850	Pallatanga
+PR60950	Penipe
+PR60951	El Altar
+PR60952	Matus
+PR60953	Puela
+PR60954	San Antonio De Bayushig
+PR60955	La Candelaria
+PR60956	Bilbao (Cab.En Quilluyacu)
+PR61050	Cumanda
+PR70101	La Providencia
+PR70102	Machala
+PR70103	Puerto Bolivar
+PR70104	Nueve De Mayo
+PR70105	El Cambio
+PR70150	Machala
+PR70151	El Cambio
+PR70152	El Retiro
+PR70250	Arenillas
+PR70251	Chacras
+PR70252	La Libertad
+PR70253	Las Lajas (Cab. En La Victoria)
+PR70254	Palmales
+PR70255	Carcabon
+PR70350	Paccha
+PR70351	Ayapamba
+PR70352	Cordoncillo
+PR70353	Milagro
+PR70354	San Jose
+PR70355	San Juan De Cerro Azul
+PR70450	Balsas
+PR70451	Bellamaria
+PR70550	Chilla
+PR70650	El Guabo
+PR70651	Barbones (Sucre)
+PR70652	La Iberia
+PR70653	Tendales (Cab.En Puerto Tendales)
+PR70654	Rio Bonito
+PR70701	Ecuador
+PR70702	El Paraiso
+PR70703	Hualtaco
+PR70704	Milton Reyes
+PR70705	Union Lojana
+PR70750	Huaquillas
+PR70850	Marcabeli
+PR70851	El Ingenio
+PR70901	Bolivar
+PR70902	Loma De Franco
+PR70903	Ochoa Leon (Matriz)
+PR70904	Tres Cerritos
+PR70950	Pasaje
+PR70951	Buenavista
+PR70952	Casacay
+PR70953	La Peana
+PR70954	Progreso
+PR70955	Uzhcurrumi
+PR70956	Canaquemada
+PR71001	La Matriz
+PR71002	La Susaya
+PR71003	Pinas Grande
+PR71050	Pinas
+PR71051	Capiro (Cab. En La Capilla De Capiro)
+PR71052	La Bocana
+PR71053	Moromoro (Cab. En El Vado)
+PR71054	Piedras
+PR71055	San Roque (Ambrosio Maldonado)
+PR71056	Saracay
+PR71150	Portovelo
+PR71151	Curtincapa
+PR71152	Morales
+PR71153	Salati
+PR71201	Santa Rosa
+PR71202	Puerto Jeli
+PR71203	Balneario Jambeli (Satelite)
+PR71204	Jumon (Satelite)
+PR71205	Nuevo Santa Rosa
+PR71250	Santa Rosa
+PR71251	Bellavista
+PR71252	Jambeli
+PR71253	La Avanzada
+PR71254	San Antonio
+PR71255	Torata
+PR71256	Victoria
+PR71257	Bellamaria
+PR71350	Zaruma
+PR71351	Abanin
+PR71352	Arcapamba
+PR71353	Guanazan
+PR71354	Guizhaguina
+PR71355	Huertas
+PR71356	Malvas
+PR71357	Muluncay Grande
+PR71358	Sinsao
+PR71359	Salvias
+PR71401	La Victoria
+PR71402	Platanillos
+PR71403	Valle Hermoso
+PR71450	La Victoria
+PR71451	La Libertad
+PR71452	El Paraiso
+PR71453	San Isidro
+PR80101	Bartolome Ruiz (Cesar Franco Carrion)
+PR80102	5 De Agosto
+PR80103	Esmeraldas
+PR80104	Luis Tello (Las Palmas)
+PR80105	Simon Plata Torres
+PR80150	Esmeraldas
+PR80151	Atacames
+PR80152	Camarones (Cab. En San Vicente)
+PR80153	Crnel. Carlos Concha Torres (Cab.En Huele)
+PR80154	Chinca
+PR80155	Chontaduro
+PR80156	Chumunde
+PR80157	Lagarto
+PR80158	La Union
+PR80159	Majua
+PR80160	Montalvo (Cab. En Horqueta)
+PR80161	Rio Verde
+PR80162	Rocafuerte
+PR80163	San Mateo
+PR80164	Sua (Cab. En La Bocana)
+PR80165	Tabiazo
+PR80166	Tachina
+PR80167	Tonchigüe
+PR80168	Vuelta Larga
+PR80250	Valdez (Limones)
+PR80251	Anchayacu
+PR80252	Atahualpa (Cab. En Camarones)
+PR80253	Borbon
+PR80254	La Tola
+PR80255	Luis Vargas Torres (Cab. En Playa De Oro)
+PR80256	Maldonado
+PR80257	Pampanal De Bolivar
+PR80258	San Francisco De Onzole
+PR80259	Santo Domingo De Onzole
+PR80260	Selva Alegre
+PR80261	Telembi
+PR80262	Colon Eloy Del Maria
+PR80263	San Jose De Cayapas
+PR80264	Timbire
+PR80350	Muisne
+PR80351	Bolivar
+PR80352	Daule
+PR80353	Galera
+PR80354	Quingue (Olmedo Perdomo Franco)
+PR80355	Salima
+PR80356	San Francisco
+PR80357	San Gregorio
+PR80358	San Jose De Chamanga (Cab.En Chamanga)
+PR80450	Rosa Zarate (Quininde)
+PR80451	Cube
+PR80452	Chura (Chancama) (Cab. En El Yerbero)
+PR80453	Malimpia
+PR80454	Viche
+PR80455	La Union
+PR80550	San Lorenzo
+PR80551	Alto Tambo (Cab. En Guadual)
+PR80552	Ancon (Pichangal) (Cab. En Palma Real)
+PR80553	Calderon
+PR80554	Carondelet
+PR80555	5 De Junio (Cab. En Uimbi)
+PR80556	Concepcion
+PR80557	Mataje (Cab. En Santander)
+PR80558	San Javier De Cachavi (Cab. En San Javier)
+PR80559	Santa Rita
+PR80560	Tambillo
+PR80561	Tululbi (Cab. En Ricaurte)
+PR80562	Urbina
+PR80650	Atacames
+PR80651	La Union
+PR80652	Sua (Cab. En La Bocana)
+PR80653	Tonchigüe
+PR80654	Tonsupa
+PR80750	Rioverde
+PR80751	Chontaduro
+PR80752	Chumunde
+PR80753	Lagarto
+PR80754	Montalvo (Cab. En Horqueta)
+PR80755	Rocafuerte
+PR80850	La Concordia
+PR80851	Monterrey
+PR80852	La Villegas
+PR80853	Plan Piloto
+PR90101	Ayacucho
+PR90102	Bolivar (Sagrario)
+PR90103	Carbo (Concepcion)
+PR90104	Febres Cordero
+PR90105	Garcia Moreno
+PR90106	Letamendi
+PR90107	Nueve De Octubre
+PR90108	Olmedo (San Alejo)
+PR90109	Roca
+PR90110	Rocafuerte
+PR90111	Sucre
+PR90112	Tarqui
+PR90113	Urdaneta
+PR90114	Ximena
+PR90115	Pascuales
+PR90150	Guayaquil
+PR90151	Chongon
+PR90152	Juan Gomez Rendon (Progreso)
+PR90153	Morro
+PR90154	Pascuales
+PR90155	Playas (Gral. Villamil)
+PR90156	Posorja
+PR90157	Puna
+PR90158	Tenguel
+PR90250	Alfredo Baquerizo Moreno (Jujan)
+PR90350	Balao
+PR90450	Balzar
+PR90550	Colimes
+PR90551	San Jacinto
+PR90601	Daule
+PR90602	La Aurora (Satelite)
+PR90603	Banife
+PR90604	Emiliano Caicedo Marcos
+PR90605	Magro
+PR90606	Padre Juan Bautista Aguirre
+PR90607	Santa Clara
+PR90608	Vicente Piedrahita
+PR90650	Daule
+PR90651	Isidro Ayora (Soledad)
+PR90652	Juan Bautista Aguirre (Los Tintos)
+PR90653	Laurel
+PR90654	Limonal
+PR90655	Lomas De Sargentillo
+PR90656	Los Lojas (Enrique Baquerizo Moreno)
+PR90657	Piedrahita (Nobol)
+PR90701	Eloy Alfaro (Duran)
+PR90702	El Recreo
+PR90750	Eloy Alfaro (Duran)
+PR90850	Velasco Ibarra (El Empalme)
+PR90851	Guayas (Pueblo Nuevo)
+PR90852	El Rosario
+PR90950	El Triunfo
+PR91050	Milagro
+PR91051	Chobo
+PR91052	General Elizalde (Bucay)
+PR91053	Mariscal Sucre (Huaques)
+PR91054	Roberto Astudillo (Cab. En Cruce De Venecia)
+PR91150	Naranjal
+PR91151	Jesus Maria
+PR91152	San Carlos
+PR91153	Santa Rosa De Flandes
+PR91154	Taura
+PR91250	Naranjito
+PR91350	Palestina
+PR91450	Pedro Carbo
+PR91451	Valle De La Virgen
+PR91452	Sabanilla
+PR91601	Samborondon
+PR91602	La Puntilla (Satelite)
+PR91650	Samborondon
+PR91651	Tarifa
+PR91850	Santa Lucia
+PR91901	Bocana
+PR91902	Candilejos
+PR91903	Central
+PR91904	Paraiso
+PR91905	San Mateo
+PR91950	El Salitre (Las Ramas)
+PR91951	Gral. Vernaza (Dos Esteros)
+PR91952	La Victoria (Nauza)
+PR91953	Junquillal
+PR92050	San Jacinto De Yaguachi
+PR92051	Crnel. Lorenzo De Garaicoa (Pedregal)
+PR92052	Crnel. Marcelino Mariduena (San Carlos)
+PR92053	Gral. Pedro J. Montero (Boliche)
+PR92054	Simon Bolivar
+PR92055	Yaguachi Viejo (Cone)
+PR92056	Virgen De Fatima
+PR92150	General Villamil (Playas)
+PR92250	Simon Bolivar
+PR92251	Crnel.Lorenzo De Garaicoa (Pedregal)
+PR92350	Coronel Marcelino Mariduena (San Carlos)
+PR92450	Lomas De Sargentillo
+PR92451	Isidro Ayora (Soledad)
+PR92550	Narcisa De Jesus
+PR92750	General Antonio Elizalde (Bucay)
+PR92850	Isidro Ayora
+PR100101	Caranqui
+PR100102	Guayaquil De Alpachaca
+PR100103	Sagrario
+PR100104	San Francisco
+PR100105	La Dolorosa Del Priorato
+PR100150	San Miguel De Ibarra
+PR100151	Ambuqui
+PR100152	Angochagua
+PR100153	Carolina
+PR100154	La Esperanza
+PR100155	Lita
+PR100156	Salinas
+PR100157	San Antonio
+PR100201	Andrade Marin (Lourdes)
+PR100202	Atuntaqui
+PR100250	Atuntaqui
+PR100251	Imbaya (San Luis De Cobuendo)
+PR100252	San Francisco De Natabuela
+PR100253	San Jose De Chaltura
+PR100254	San Roque
+PR100301	Sagrario
+PR100302	San Francisco
+PR100350	Cotacachi
+PR100351	Apuela
+PR100352	Garcia Moreno (Llurimagua)
+PR100353	Imantag
+PR100354	Penaherrera
+PR100355	Plaza Gutierrez (Calvario)
+PR100356	Quiroga
+PR100357	6 De Julio De Cuellaje (Cab. En Cuellaje)
+PR100358	Vacas Galindo (El Churo) (Cab.En San Miguel Alto
+PR100401	Jordan
+PR100402	San Luis
+PR100450	Otavalo
+PR100451	Dr. Miguel Egas Cabezas (Peguche)
+PR100452	Eugenio Espejo (Calpaqui)
+PR100453	Gonzalez Suarez
+PR100454	Pataqui
+PR100455	San Jose De Quichinche
+PR100456	San Juan De Iluman
+PR100457	San Pablo
+PR100458	San Rafael
+PR100459	Selva Alegre (Cab.En San Miguel De Pamplona)
+PR100550	Pimampiro
+PR100551	Chuga
+PR100552	Mariano Acosta
+PR100553	San Francisco De Sigsipamba
+PR100650	Urcuqui Cabecera Cantonal
+PR100651	Cahuasqui
+PR100652	La Merced De Buenos Aires
+PR100653	Pablo Arenas
+PR100654	San Blas
+PR100655	Tumbabiro
+PR110101	El Sagrario
+PR110102	San Sebastian
+PR110103	Sucre
+PR110104	Valle
+PR110150	Loja
+PR110151	Chantaco
+PR110152	Chuquiribamba
+PR110153	El Cisne
+PR110154	Gualel
+PR110155	Jimbilla
+PR110156	Malacatos (Valladolid)
+PR110157	San Lucas
+PR110158	San Pedro De Vilcabamba
+PR110159	Santiago
+PR110160	Taquil (Miguel Riofrio)
+PR110161	Vilcabamba (Victoria)
+PR110162	Yangana (Arsenio Castillo)
+PR110163	Quinara
+PR110201	Cariamanga
+PR110202	Chile
+PR110203	San Vicente
+PR110250	Cariamanga
+PR110251	Colaisaca
+PR110252	El Lucero
+PR110253	Utuana
+PR110254	Sanguillin
+PR110301	Catamayo
+PR110302	San Jose
+PR110350	Catamayo (La Toma)
+PR110351	El Tambo
+PR110352	Guayquichuma
+PR110353	San Pedro De La Bendita
+PR110354	Zambi
+PR110450	Celica
+PR110451	Cruzpamba (Cab. En Carlos Bustamante)
+PR110452	Chaquinal
+PR110453	12 De Diciembre (Cab. En Achiotes)
+PR110454	Pindal (Federico Paez)
+PR110455	Pozul (San Juan De Pozul)
+PR110456	Sabanilla
+PR110457	Tnte. Maximiliano Rodriguez Loaiza
+PR110550	Chaguarpamba
+PR110551	Buenavista
+PR110552	El Rosario
+PR110553	Santa Rufina
+PR110554	Amarillos
+PR110650	Amaluza
+PR110651	Bellavista
+PR110652	Jimbura
+PR110653	Santa Teresita
+PR110654	27 De Abril (Cab. En La Naranja)
+PR110655	El Ingenio
+PR110656	El Airo
+PR110750	Gonzanama
+PR110751	Changaimina (La Libertad)
+PR110752	Fundochamba
+PR110753	Nambacola
+PR110754	Purunuma (Eguiguren)
+PR110755	Quilanga (La Paz)
+PR110756	Sacapalca
+PR110757	San Antonio De Las Aradas (Cab. En Las Aradas)
+PR110801	General Eloy Alfaro (San Sebastian)
+PR110802	Macara (Manuel Enrique Rengel Suquilanda)
+PR110850	Macara
+PR110851	Larama
+PR110852	La Victoria
+PR110853	Sabiango (La Capilla)
+PR110901	Catacocha
+PR110902	Lourdes
+PR110950	Catacocha
+PR110951	Cangonama
+PR110952	Guachanama
+PR110953	La Tingue
+PR110954	Lauro Guerrero
+PR110955	Olmedo (Santa Barbara)
+PR110956	Orianga
+PR110957	San Antonio
+PR110958	Casanga
+PR110959	Yamana
+PR111050	Alamor
+PR111051	Ciano
+PR111052	El Arenal
+PR111053	El Limo (Mariana De Jesus)
+PR111054	Mercadillo
+PR111055	Vicentino
+PR111150	Saraguro
+PR111151	El Paraiso De Celen
+PR111152	El Tablon
+PR111153	Lluzhapa
+PR111154	Manu
+PR111155	San Antonio De Qumbe (Cumbe)
+PR111156	San Pablo De Tenta
+PR111157	San Sebastian De Yuluc
+PR111158	Selva Alegre
+PR111159	Urdaneta (Paquishapa)
+PR111160	Sumaypamba
+PR111250	Sozoranga
+PR111251	Nueva Fatima
+PR111252	Tacamoros
+PR111350	Zapotillo
+PR111351	Mangahurco (Cazaderos)
+PR111352	Garzareal
+PR111353	Limones
+PR111354	Paletillas
+PR111355	Bolaspamba
+PR111450	Pindal
+PR111451	Chaquinal
+PR111452	12 De Diciembre (Cab.En Achiotes)
+PR111453	Milagros
+PR111550	Quilanga
+PR111551	Fundochamba
+PR111552	San Antonio De Las Aradas (Cab. En Las Aradas)
+PR111650	Olmedo
+PR111651	La Tingue
+PR120101	Clemente Baquerizo
+PR120102	Dr. Camilo Ponce
+PR120103	Barreiro
+PR120104	El Salto
+PR120150	Babahoyo
+PR120151	Barreiro (Santa Rita)
+PR120152	Caracol
+PR120153	Febres Cordero (Las Juntas)
+PR120154	Pimocha
+PR120155	La Union
+PR120250	Baba
+PR120251	Guare
+PR120252	Isla De Bejucal
+PR120350	Montalvo
+PR120450	Puebloviejo
+PR120451	Puerto Pechiche
+PR120452	San Juan
+PR120501	Quevedo
+PR120502	San Camilo
+PR120503	San Jose
+PR120504	Guayacan
+PR120505	Nicolas Infante Diaz
+PR120506	San Cristobal
+PR120507	Siete De Octubre
+PR120508	24 De Mayo
+PR120509	Venus Del Rio Quevedo
+PR120510	Viva Alfaro
+PR120550	Quevedo
+PR120551	Buena Fe
+PR120552	Mocache
+PR120553	San Carlos
+PR120554	Valencia
+PR120555	La Esperanza
+PR120650	Catarama
+PR120651	Ricaurte
+PR120701	10 De Noviembre
+PR120750	Ventanas
+PR120751	Quinsaloma
+PR120752	Zapotal
+PR120753	Chacarita
+PR120754	Los Angeles
+PR120850	Vinces
+PR120851	Antonio Sotomayor (Cab. En Playas De Vinces)
+PR120852	Palenque
+PR120950	Palenque
+PR121001	San Jacinto De Buena Fe
+PR121002	7 De Agosto
+PR121003	11 De Octubre
+PR121050	San Jacinto De Buena Fe
+PR121051	Patricia Pilar
+PR121150	Valencia
+PR121250	Mocache
+PR121350	Quinsaloma
+PR130101	Portoviejo
+PR130102	12 De Marzo
+PR130103	Colon
+PR130104	Picoaza
+PR130105	San Pablo
+PR130106	Andres De Vera
+PR130107	Francisco Pacheco
+PR130108	18 De Octubre
+PR130109	Simon Bolivar
+PR130150	Portoviejo
+PR130151	Abdon Calderon (San Francisco)
+PR130152	Alhajuela (Bajo Grande)
+PR130153	Crucita
+PR130154	Pueblo Nuevo
+PR130155	Riochico (Rio Chico)
+PR130156	San Placido
+PR130157	Chirijos
+PR130250	Calceta
+PR130251	Membrillo
+PR130252	Quiroga
+PR130301	Chone
+PR130302	Santa Rita
+PR130350	Chone
+PR130351	Boyaca
+PR130352	Canuto
+PR130353	Convento
+PR130354	Chibunga
+PR130355	Eloy Alfaro
+PR130356	Ricaurte
+PR130357	San Antonio
+PR130401	El Carmen
+PR130402	4 De Diciembre
+PR130450	El Carmen
+PR130451	Wilfrido Loor Moreira (Maicito)
+PR130452	San Pedro De Suma
+PR130550	Flavio Alfaro
+PR130551	San Francisco De Novillo (Cab. En
+PR130552	Zapallo
+PR130601	Dr. Miguel Moran Lucio
+PR130602	Manuel Inocencio Parrales Y Guale
+PR130603	San Lorenzo De Jipijapa
+PR130650	Jipijapa
+PR130651	America
+PR130652	El Anegado (Cab. En Eloy Alfaro)
+PR130653	Julcuy
+PR130654	La Union
+PR130655	Machalilla
+PR130656	Membrillal
+PR130657	Pedro Pablo Gomez
+PR130658	Puerto De Cayo
+PR130659	Puerto Lopez
+PR130750	Junin
+PR130801	Los Esteros
+PR130802	Manta
+PR130803	San Mateo
+PR130804	Tarqui
+PR130805	Eloy Alfaro
+PR130850	Manta
+PR130851	San Lorenzo
+PR130852	Santa Marianita (Boca De Pacoche)
+PR130901	Anibal San Andres
+PR130902	Montecristi
+PR130903	El Colorado
+PR130904	General Eloy Alfaro
+PR130905	Leonidas Proano
+PR130950	Montecristi
+PR130951	Jaramijo
+PR130952	La Pila
+PR131050	Pajan
+PR131051	Campozano (La Palma De Pajan)
+PR131052	Cascol
+PR131053	Guale
+PR131054	Lascano
+PR131150	Pichincha
+PR131151	Barraganete
+PR131152	San Sebastian
+PR131250	Rocafuerte
+PR131301	Santa Ana
+PR131302	Lodana
+PR131350	Santa Ana De Vuelta Larga
+PR131351	Ayacucho
+PR131352	Honorato Vasquez (Cab. En Vasquez)
+PR131353	La Union
+PR131354	Olmedo
+PR131355	San Pablo (Cab. En Pueblo Nuevo)
+PR131401	Bahia De Caraquez
+PR131402	Leonidas Plaza Gutierrez
+PR131450	Bahia De Caraquez
+PR131451	Canoa
+PR131452	Cojimies
+PR131453	Charapoto
+PR131454	10 De Agosto
+PR131455	Jama
+PR131456	Pedernales
+PR131457	San Isidro
+PR131458	San Vicente
+PR131550	Tosagua
+PR131551	Bachillero
+PR131552	Angel Pedro Giler (La Estancilla)
+PR131650	Sucre
+PR131651	Bellavista
+PR131652	Noboa
+PR131653	Arq. Sixto Duran Ballen
+PR131750	Pedernales
+PR131751	Cojimies
+PR131752	10 De Agosto
+PR131753	Atahualpa
+PR131850	Olmedo
+PR131950	Puerto Lopez
+PR131951	Machalilla
+PR131952	Salango
+PR132050	Jama
+PR132150	Jaramijo
+PR132250	San Vicente
+PR132251	Canoa
+PR140150	Macas
+PR140151	Alshi (Cab. En 9 De Octubre)
+PR140152	Chiguaza
+PR140153	General Proano
+PR140154	Huasaga (Cab.En Wampuik)
+PR140155	Macuma
+PR140156	San Isidro
+PR140157	Sevilla Don Bosco
+PR140158	Sinai
+PR140159	Taisha
+PR140160	Zuna (Zunac)
+PR140161	Tuutinentza
+PR140162	Cuchaentza
+PR140163	San Jose De Morona
+PR140164	Rio Blanco
+PR140201	Gualaquiza
+PR140202	Mercedes Molina
+PR140250	Gualaquiza
+PR140251	Amazonas (Rosario De Cuyes)
+PR140252	Bermejos
+PR140253	Bomboiza
+PR140254	Chigüinda
+PR140255	El Rosario
+PR140256	Nueva Tarqui
+PR140257	San Miguel De Cuyes
+PR140258	El Ideal
+PR140350	General Leonidas Plaza Gutierrez (Limon)
+PR140351	Indanza
+PR140352	Pan De Azucar
+PR140353	San Antonio (Cab. En San Antonio Centro
+PR140354	San Carlos De Limon (San Carlos Del
+PR140355	San Juan Bosco
+PR140356	San Miguel De Conchay
+PR140357	Santa Susana De Chiviaza (Cab. En Chiviaza)
+PR140358	Yunganza (Cab. En El Rosario)
+PR140450	Palora (Metzera)
+PR140451	Arapicos
+PR140452	Cumanda (Cab. En Colonia Agricola Sevilla Del Oro)
+PR140453	Huamboya
+PR140454	Sangay (Cab. En Nayamanaca)
+PR140550	Santiago De Mendez
+PR140551	Copal
+PR140552	Chupianza
+PR140553	Patuca
+PR140554	San Luis De El Acho (Cab. En El Acho)
+PR140555	Santiago
+PR140556	Tayuza
+PR140557	San Francisco De Chinimbimi
+PR140650	Sucua
+PR140651	Asuncion
+PR140652	Huambi
+PR140653	Logrono
+PR140654	Yaupi
+PR140655	Santa Marianita De Jesus
+PR140750	Huamboya
+PR140751	Chiguaza
+PR140752	Pablo Sexto
+PR140850	San Juan Bosco
+PR140851	Pan De Azucar
+PR140852	San Carlos De Limon
+PR140853	San Jacinto De Wakambeis
+PR140854	Santiago De Pananza
+PR140950	Taisha
+PR140951	Huasaga (Cab. En Wampuik)
+PR140952	Macuma
+PR140953	Tuutinentza
+PR140954	Pumpuentsa
+PR141050	Logrono
+PR141051	Yaupi
+PR141052	Shimpis
+PR141150	Pablo Sexto
+PR141250	Santiago
+PR141251	San Jose De Morona
+PR150150	Tena
+PR150151	Ahuano
+PR150152	Carlos Julio Arosemena Tola (Zatza-Yacu)
+PR150153	Chontapunta
+PR150154	Pano
+PR150155	Puerto Misahualli
+PR150156	Puerto Napo
+PR150157	Talag
+PR150158	San Juan De Muyuna
+PR150350	Archidona
+PR150351	Avila
+PR150352	Cotundo
+PR150353	Loreto
+PR150354	San Pablo De Ushpayacu
+PR150355	Puerto Murialdo
+PR150450	El Chaco
+PR150451	Gonzalo Diaz De Pineda (El Bombon)
+PR150452	Linares
+PR150453	Oyacachi
+PR150454	Santa Rosa
+PR150455	Sardinas
+PR150750	Baeza
+PR150751	Cosanga
+PR150752	Cuyuja
+PR150753	Papallacta
+PR150754	San Francisco De Borja (Virgilio Davila)
+PR150755	San Jose Del Payamino
+PR150756	Sumaco
+PR150950	Carlos Julio Arosemena Tola
+PR160150	Puyo
+PR160151	Arajuno
+PR160152	Canelos
+PR160153	Curaray
+PR160154	Diez De Agosto
+PR160155	Fatima
+PR160156	Montalvo (Andoas)
+PR160157	Pomona
+PR160158	Rio Corrientes
+PR160159	Rio Tigre
+PR160160	Santa Clara
+PR160161	Sarayacu
+PR160162	Simon Bolivar (Cab. En Mushullacta)
+PR160163	Tarqui
+PR160164	Teniente Hugo Ortiz
+PR160165	Veracruz (Indillama) (Cab. En Indillama)
+PR160166	El Triunfo
+PR160250	Mera
+PR160251	Madre Tierra
+PR160252	Shell
+PR160350	Santa Clara
+PR160351	San Jose
+PR160450	Arajuno
+PR160451	Curaray
+PR170101	Belisario Quevedo
+PR170102	Carcelen
+PR170103	Centro Historico
+PR170104	Cochapamba
+PR170105	Comite Del Pueblo
+PR170106	Cotocollao
+PR170107	Chilibulo
+PR170108	Chillogallo
+PR170109	Chimbacalle
+PR170110	El Condado
+PR170111	Guamani
+PR170112	Inaquito
+PR170113	Itchimbia
+PR170114	Jipijapa
+PR170115	Kennedy
+PR170116	La Argelia
+PR170117	La Concepcion
+PR170118	La Ecuatoriana
+PR170119	La Ferroviaria
+PR170120	La Libertad
+PR170121	La Magdalena
+PR170122	La Mena
+PR170123	Mariscal Sucre
+PR170124	Ponceano
+PR170125	Puengasi
+PR170126	Quitumbe
+PR170127	Rumipamba
+PR170128	San Bartolo
+PR170129	San Isidro Del Inca
+PR170130	San Juan
+PR170131	Solanda
+PR170132	Turubamba
+PR170150	Quito Distrito Metropolitano
+PR170151	Alangasi
+PR170152	Amaguana
+PR170153	Atahualpa
+PR170154	Calacali
+PR170155	Calderon
+PR170156	Conocoto
+PR170157	Cumbaya
+PR170158	Chavezpamba
+PR170159	Checa
+PR170160	El Quinche
+PR170161	Gualea
+PR170162	Guangopolo
+PR170163	Guayllabamba
+PR170164	La Merced
+PR170165	Llano Chico
+PR170166	Lloa
+PR170167	Mindo
+PR170168	Nanegal
+PR170169	Nanegalito
+PR170170	Nayon
+PR170171	Nono
+PR170172	Pacto
+PR170173	Pedro Vicente Maldonado
+PR170174	Perucho
+PR170175	Pifo
+PR170176	Pintag
+PR170177	Pomasqui
+PR170178	Puellaro
+PR170179	Puembo
+PR170180	San Antonio
+PR170181	San Jose De Minas
+PR170182	San Miguel De Los Bancos
+PR170183	Tababela
+PR170184	Tumbaco
+PR170185	Yaruqui
+PR170186	Zambiza
+PR170187	Puerto Quito
+PR170201	Ayora
+PR170202	Cayambe
+PR170203	Juan Montalvo
+PR170250	Cayambe
+PR170251	Ascazubi
+PR170252	Cangahua
+PR170253	Olmedo (Pesillo)
+PR170254	Oton
+PR170255	Santa Rosa De Cuzubamba
+PR170350	Machachi
+PR170351	Aloag
+PR170352	Aloasi
+PR170353	Cutuglahua
+PR170354	El Chaupi
+PR170355	Manuel Cornejo Astorga (Tandapi)
+PR170356	Tambillo
+PR170357	Uyumbicho
+PR170450	Tabacundo
+PR170451	La Esperanza
+PR170452	Malchingui
+PR170453	Tocachi
+PR170454	Tupigachi
+PR170501	Sangolqui
+PR170502	San Pedro De Taboada
+PR170503	San Rafael
+PR170550	Sangolqui
+PR170551	Cotogchoa
+PR170552	Rumipamba
+PR170750	San Miguel De Los Bancos
+PR170751	Mindo
+PR170752	Pedro Vicente Maldonado
+PR170753	Puerto Quito
+PR170850	Pedro Vicente Maldonado
+PR170950	Puerto Quito
+PR180101	Atocha – Ficoa
+PR180102	Celiano Monge
+PR180103	Huachi Chico
+PR180104	Huachi Loreto
+PR180105	La Merced
+PR180106	La Peninsula
+PR180107	Matriz
+PR180108	Pishilata
+PR180109	San Francisco
+PR180150	Ambato
+PR180151	Ambatillo
+PR180152	Atahualpa (Chisalata)
+PR180153	Augusto N. Martinez (Mundugleo)
+PR180154	Constantino Fernandez (Cab. En Cullitahua)
+PR180155	Huachi Grande
+PR180156	Izamba
+PR180157	Juan Benigno Vela
+PR180158	Montalvo
+PR180159	Pasa
+PR180160	Picaigua
+PR180161	Pilagüin (Pilahüin)
+PR180162	Quisapincha (Quizapincha)
+PR180163	San Bartolome De Pinllog
+PR180164	San Fernando (Pasa San Fernando)
+PR180165	Santa Rosa
+PR180166	Totoras
+PR180167	Cunchibamba
+PR180168	Unamuncho
+PR180250	Banos De Agua Santa
+PR180251	Lligua
+PR180252	Rio Negro
+PR180253	Rio Verde
+PR180254	Ulba
+PR180350	Cevallos
+PR180450	Mocha
+PR180451	Pinguili
+PR180550	Patate
+PR180551	El Triunfo
+PR180552	Los Andes (Cab. En Poatug)
+PR180553	Sucre (Cab. En Sucre-Patate Urcu)
+PR180650	Quero
+PR180651	Rumipamba
+PR180652	Yanayacu - Mochapata (Cab. En Yanayacu)
+PR180701	Pelileo
+PR180702	Pelileo Grande
+PR180750	Pelileo
+PR180751	Benitez (Pachanlica)
+PR180752	Bolivar
+PR180753	Cotalo
+PR180754	Chiquicha (Cab. En Chiquicha Grande)
+PR180755	El Rosario (Rumichaca)
+PR180756	Garcia Moreno (Chumaqui)
+PR180757	Guambalo (Huambalo)
+PR180758	Salasaca
+PR180801	Ciudad Nueva
+PR180802	Pillaro
+PR180850	Pillaro
+PR180851	Baquerizo Moreno
+PR180852	Emilio Maria Teran (Rumipamba)
+PR180853	Marcos Espinel (Chacata)
+PR180854	Presidente Urbina (Chagrapamba -Patzucul)
+PR180855	San Andres
+PR180856	San Jose De Poalo
+PR180857	San Miguelito
+PR180950	Tisaleo
+PR180951	Quinchicoto
+PR190101	El Limon
+PR190102	Zamora
+PR190150	Zamora
+PR190151	Cumbaratza
+PR190152	Guadalupe
+PR190153	Imbana (La Victoria De Imbana)
+PR190154	Paquisha
+PR190155	Sabanilla
+PR190156	Timbara
+PR190157	Zumbi
+PR190158	San Carlos De Las Minas
+PR190250	Zumba
+PR190251	Chito
+PR190252	El Chorro
+PR190253	El Porvenir Del Carmen
+PR190254	La Chonta
+PR190255	Palanda
+PR190256	Pucapamba
+PR190257	San Francisco Del Vergel
+PR190258	Valladolid
+PR190259	San Andres
+PR190350	Guayzimi
+PR190351	Zurmi
+PR190352	Nuevo Paraiso
+PR190450	28 De Mayo (San Jose De Yacuambi)
+PR190451	La Paz
+PR190452	Tutupali
+PR190550	Yantzaza (Yanzatza)
+PR190551	Chicana
+PR190552	El Pangui
+PR190553	Los Encuentros
+PR190650	El Pangui
+PR190651	El Guisme
+PR190652	Pachicutza
+PR190653	Tundayme
+PR190750	Zumbi
+PR190751	Paquisha
+PR190752	Triunfo-Dorado
+PR190753	Panguintza
+PR190850	Palanda
+PR190851	El Porvenir Del Carmen
+PR190852	San Francisco Del Vergel
+PR190853	Valladolid
+PR190854	La Canela
+PR190950	Paquisha
+PR190951	Bellavista
+PR190952	Nuevo Quito
+PR200150	Puerto Baquerizo Moreno
+PR200151	El Progreso
+PR200152	Isla Santa Maria (Floreana) (Cab. En Pto. Velasco Ibarra)
+PR200250	Puerto Villamil
+PR200251	Tomas De Berlanga (Santo Tomas)
+PR200350	Puerto Ayora
+PR200351	Bellavista
+PR200352	Santa Rosa (Incluye La Isla Baltra)
+PR210150	Nueva Loja
+PR210151	Cuyabeno
+PR210152	Dureno
+PR210153	General Farfan
+PR210154	Tarapoa
+PR210155	El Eno
+PR210156	Pacayacu
+PR210157	Jambeli
+PR210158	Santa Cecilia
+PR210159	Aguas Negras
+PR210250	El Dorado De Cascales
+PR210251	El Reventador
+PR210252	Gonzalo Pizarro
+PR210253	Lumbaqui
+PR210254	Puerto Libre
+PR210255	Santa Rosa De Sucumbios
+PR210350	Puerto El Carmen Del Putumayo
+PR210351	Palma Roja
+PR210352	Puerto Bolivar (Puerto Montufar)
+PR210353	Puerto Rodriguez
+PR210354	Santa Elena
+PR210450	Shushufindi
+PR210451	Limoncocha
+PR210452	Panacocha
+PR210453	San Roque (Cab. En San Vicente)
+PR210454	San Pedro De Los Cofanes
+PR210455	Siete De Julio
+PR210550	La Bonita
+PR210551	El Playon De San Francisco
+PR210552	La Sofia
+PR210553	Rosa Florida
+PR210554	Santa Barbara
+PR210650	El Dorado De Cascales
+PR210651	Santa Rosa De Sucumbios
+PR210652	Sevilla
+PR210750	Tarapoa
+PR210751	Cuyabeno
+PR210752	Aguas Negras
+PR220150	Puerto Francisco De Orellana (El Coca)
+PR220151	Dayuma
+PR220152	Taracoa (Nueva Esperanza: Yuca)
+PR220153	Alejandro Labaka
+PR220154	El Dorado
+PR220155	El Eden
+PR220156	Garcia Moreno
+PR220157	Ines Arango (Cab. En Western)
+PR220158	La Belleza
+PR220159	Nuevo Paraiso (Cab. En Union
+PR220160	San Jose De Guayusa
+PR220161	San Luis De Armenia
+PR220201	Tipitini
+PR220250	Nuevo Rocafuerte
+PR220251	Capitan Augusto Rivadeneyra
+PR220252	Cononaco
+PR220253	Santa Maria De Huiririma
+PR220254	Tiputini
+PR220255	Yasuni
+PR220350	La Joya De Los Sachas
+PR220351	Enokanqui
+PR220352	Pompeya
+PR220353	San Carlos
+PR220354	San Sebastian Del Coca
+PR220355	Lago San Pedro
+PR220356	Rumipamba
+PR220357	Tres De Noviembre
+PR220358	Union Milagrena
+PR220450	Loreto
+PR220451	Avila (Cab. En Huiruno)
+PR220452	Puerto Murialdo
+PR220453	San Jose De Payamino
+PR220454	San Jose De Dahuano
+PR220455	San Vicente De Huaticocha
+PR230101	Abraham Calazacon
+PR230102	Bomboli
+PR230103	Chiguilpe
+PR230104	Rio Toachi
+PR230105	Rio Verde
+PR230106	Santo Domingo De Los Colorados
+PR230107	Zaracay
+PR230150	Santo Domingo De Los Colorados
+PR230151	Alluriquin
+PR230152	Puerto Limon
+PR230153	Luz De America
+PR230154	San Jacinto Del Bua
+PR230155	Valle Hermoso
+PR230156	El Esfuerzo
+PR230157	Santa Maria Del Toachi
+PR240101	Ballenita
+PR240102	Santa Elena
+PR240150	Santa Elena
+PR240151	Atahualpa
+PR240152	Colonche
+PR240153	Chanduy
+PR240154	Manglaralto
+PR240155	Simon Bolivar (Julio Moreno)
+PR240156	San Jose De Ancon
+PR240250	La Libertad
+PR240301	Carlos Espinoza Larrea
+PR240302	Gral. Alberto Enriquez Gallo
+PR240303	Vicente Rocafuerte
+PR240304	Santa Rosa
+PR240350	Salinas
+PR240351	Anconcito
+PR240352	Jose Luis Tamayo (Muey)
+PR900151	Las Golondrinas
+PR900351	Manga Del Cura
+PR900451	El Piedrero
+	
